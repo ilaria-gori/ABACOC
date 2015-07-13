@@ -1,18 +1,15 @@
-cmake_minimum_required(VERSION 2.8)
-set(PROJECTNAME ABACOC2.0)
-project(${PROJECTNAME})
+CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
 
-set(headers include/classifier.h
-	include/ABACOCClassifier.h
-	include/dirent.h
-	include/trainingParameters.h)
-set(sources src/ABACOCClassifier.cpp
-	src/main.cpp)
-	
+SET(PROJECTNAME ABACOC)
+PROJECT(${PROJECTNAME})
+
+include_directories("$ENV{EIGEN_ROOT}")
+
+set(folder_header include/ball.h include/searcher.h include/ballPredictor.h include/model.h include/exhaustiveSearcher.h include/maxBallPredictor.h)
+set(folder_source src/main.cpp src/ball.cpp src/model.cpp src/exhaustiveSearcher.cpp src/maxBallPredictor.cpp)
+
+source_group("Source Files" FILES ${folder_source})
+source_group("Header Files" FILES ${folder_header})
 include_directories(${PROJECT_SOURCE_DIR}/include)
-include_directories("$ENV{EIGEN3_INCLUDE_DIR}")
-	
-source_group("Source Files" FILES ${sources})
-source_group("Header Files" FILES ${headers})
 
-add_executable(${PROJECTNAME} ${sources} ${headers})
+add_executable(${PROJECTNAME} ${folder_source} ${folder_header} )
