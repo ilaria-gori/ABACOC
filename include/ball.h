@@ -1,32 +1,32 @@
 #ifndef _BALL_H_
 #define _BALL_H_
 
-#include <vector>
-#include <map>
+#include "utility.h"
 
-typedef std::vector<double> Sample;
-
-class BallPredictor;
-
-struct Ball
+namespace abacoc
 {
-	long ID;
-	std::map<int,int> class_samples;
-	int tot_samples;
-	int errors;
-	double init_radius;
-	double radius;
+	class BallPredictor;
 
-	Ball(const std::vector<double> &center, double radius, int n_classes);
-	void update(const Sample &sample, const BallPredictor* ball_predictor);
-	std::vector<double> getCenter();
+	struct Ball
+	{
+		long ID;
+		std::map<int, int> class_samples;
+		int tot_samples;
+		int errors;
+		double init_radius;
+		double radius;
 
-private:
-	std::vector<double> center;
-	
-	void shrinkRadius();
-	void updateRadius();
-	void updateCenter();
-};
+		Ball(const std::vector<double> &center, double radius, int n_classes);
+		void update(const Sample &sample, const BallPredictor* ball_predictor);
+		std::vector<double> getCenter();
+
+	private:
+		std::vector<double> center;
+
+		void shrinkRadius();
+		void updateRadius();
+		void updateCenter();
+	};
+}
 
 #endif
