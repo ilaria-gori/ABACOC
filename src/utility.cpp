@@ -32,6 +32,14 @@ namespace abacoc
 		return (ss.fail()) ? -1 : res;
 	}
 
+	double str2double(const std::string &s)
+	{
+		std::stringstream ss(s);
+		double res;
+		ss >> res;
+		return (ss.fail()) ? -1 : res;
+	}
+
 	bool readClassFolder(const std::string &class_path, const std::string &class_alias, int class_id, std::vector<Video> &dataset)
 	{
 		struct dirent *video_file;
@@ -63,7 +71,7 @@ namespace abacoc
 			if (init)
 			{
 				if (video_file->d_name != NULL)
-					video_name = video_file->d_name;
+					video_name = class_path + "/" + video_file->d_name;
 
 				init = false;
 			}
@@ -74,7 +82,7 @@ namespace abacoc
 					done = true;
 					break;
 				}
-				video_name = video_file->d_name;
+				video_name = class_path + "/" + video_file->d_name;
 			}
 
 			std::ifstream file(video_name.c_str());
@@ -83,13 +91,19 @@ namespace abacoc
 			while (file)
 			{
 				getline(file, line);
+				if (line == "")
+				{
+					break;
+				}
 				std::stringstream string_line(line);
 				Sample sample;
 
-				//split the line based on spaces
-				copy(std::istream_iterator<double>(string_line),
-					std::istream_iterator<double>(),
-					std::back_inserter(sample));
+				while (string_line.good())
+				{
+					std::string substr;
+					getline(string_line, substr, ',');
+					sample.push_back(str2double(substr));
+				}
 
 				features.push_back(sample);
 			}
@@ -154,13 +168,13 @@ namespace abacoc
 		return dataset;
 	}
 
-	std::vector<Video> readDataset(const std::map<std::string, std::string> &line_args)
+	std::vector<Video> readDataset(const std::map<std::string, std::string> &line_args, const std::string &file)
 	{
 		std::vector<Video> dataset;
 
 		std::map<std::string, std::string>::const_iterator it;
 		std::string path = "";
-		it = line_args.find("-file");
+		it = line_args.find(file);
 		if (it != line_args.end())
 		{
 			path = it->second;

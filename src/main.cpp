@@ -18,9 +18,17 @@ int main(int argc, char* argv[])
 	}
 
 	//this reads the dataset in a convenient format (each class folder contains files with features as
-	//lines of doubles) and, if requested by the user, normalize them and/or add the derivative
-	std::vector<Video> dataset = readDataset(line_args);
-	if (dataset.empty())
+	//lines of doubles) and, if requested by the user, normalize them and/or add the derivative. You can
+	//use the same function twice to get train and test and using "-train" and "-test" as second parameter
+	std::vector<Video> train = readDataset(line_args, "-train");
+	if (train.empty())
+	{
+		std::cout << "Error while reading dataset" << std::endl;
+		return 0;
+	}
+
+	std::vector<Video> test = readDataset(line_args, "-test");
+	if (test.empty())
 	{
 		std::cout << "Error while reading dataset" << std::endl;
 		return 0;
@@ -72,6 +80,10 @@ int main(int argc, char* argv[])
 		{
 			ball_pred = new MaxBallPredictor();
 		}
+	}
+	else
+	{
+		ball_pred = new MaxBallPredictor();
 	}
 
 	Model model(parameters, searcher, ball_pred);

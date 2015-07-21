@@ -25,13 +25,15 @@ namespace abacoc
 		int intr_dimension;
 	};
 
-	std::vector<Video> readDataset(const std::map<std::string, std::string> &args);
+	std::vector<Video> readDataset(const std::map<std::string, std::string> &args, const std::string &file);
 
 	Parameters readParameters(const std::map<std::string, std::string> &args);
 
 	std::map<std::string, std::string> parseLine(int argc, char* argv[]);
 
 	int str2int(const std::string &s);
+
+	double str2double(const std::string &s);
 
 	void normalizeData(std::vector<Video> &dataset, norm_t norm_type);
 
