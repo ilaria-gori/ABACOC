@@ -5,8 +5,8 @@ PROJECT(${PROJECTNAME})
 
 include_directories("$ENV{EIGEN_ROOT}")
 
-set(folder_header include/ball.h include/searcher.h include/ballPredictor.h include/model.h include/exhaustiveSearcher.h include/maxBallPredictor.h include/utility.h)
-set(folder_source src/main.cpp src/ball.cpp src/model.cpp src/exhaustiveSearcher.cpp src/maxBallPredictor.cpp src/utility.cpp)
+set(folder_header include/ball.h include/searcher.h include/ballPredictor.h include/model.h include/exhaustiveSearcher.h include/maxBallPredictor.h include/utility.h include/parameters.h include/randomGenerator.h)
+set(folder_source src/main.cpp src/ball.cpp src/model.cpp src/exhaustiveSearcher.cpp src/maxBallPredictor.cpp src/utility.cpp src/parameters.cpp src/randomGenerator.cpp)
 
 if (WIN32)
 	set(folder_header ${folder_header} include/dirent.h)

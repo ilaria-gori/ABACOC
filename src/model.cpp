@@ -10,4 +10,14 @@ namespace abacoc
 	{
 	}
 
+	void Model::train(const Video &sample)
+	{
+		if (balls.size() == 0)
+		{
+		}
+		else
+		{
+
+		}
+	}
 }

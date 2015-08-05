@@ -40,7 +40,7 @@ namespace abacoc
 		return (ss.fail()) ? -1 : res;
 	}
 
-	bool readClassFolder(const std::string &class_path, const std::string &class_alias, int class_id, std::vector<Video> &dataset)
+	bool readClassFolder(const std::string &class_path, const std::string &class_alias, int class_id, Dataset &dataset)
 	{
 		struct dirent *video_file;
 		DIR *class_folder;
@@ -113,9 +113,9 @@ namespace abacoc
 		return true;
 	}
 
-	std::vector<Video> readFolders(const std::string &path)
+	Dataset readFolders(const std::string &path)
 	{
-		std::vector<Video> dataset;
+		Dataset dataset;
 
 		struct dirent *class_folder;
 		DIR *dataset_folder;
@@ -168,9 +168,9 @@ namespace abacoc
 		return dataset;
 	}
 
-	std::vector<Video> readDataset(const std::map<std::string, std::string> &line_args, const std::string &file)
+	Dataset readDataset(const std::map<std::string, std::string> &line_args, const std::string &file)
 	{
-		std::vector<Video> dataset;
+		Dataset dataset;
 
 		std::map<std::string, std::string>::const_iterator it;
 		std::string path = "";
@@ -221,44 +221,6 @@ namespace abacoc
 		}
 
 		return dataset;
-	}
-
-	Parameters readParameters(const std::map<std::string, std::string> &line_args)
-	{
-		std::map<std::string, std::string>::const_iterator it;
-		int intr_dim = 2;
-		it = line_args.find("-dim");
-		if (it != line_args.end())
-		{
-			int tmp = str2int(it->second);
-			if (tmp != -1)
-				intr_dim = tmp;
-		}
-
-		int n_classes = 0;
-		it = line_args.find("-n_c");
-		if (it != line_args.end())
-		{
-			int tmp = str2int(it->second);
-			if (tmp != -1)
-				n_classes = tmp;
-		}
-
-		int m_size = INT_MAX;
-		it = line_args.find("-m");
-		if (it != line_args.end())
-		{
-			int tmp = str2int(it->second);
-			if (tmp != -1)
-				m_size = tmp;
-		}
-
-		Parameters parameters;
-		parameters.n_classes = n_classes;
-		parameters.intr_dimension = intr_dim;
-		parameters.mod_size = m_size;
-
-		return parameters;
 	}
 
 	void normalizeData(std::vector<Video> &dataset, norm_t norm_type)

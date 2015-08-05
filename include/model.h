@@ -4,6 +4,7 @@
 #include "searcher.h"
 #include "ball.h"
 #include "ballPredictor.h"
+#include "parameters.h"
 #include "utility.h"
 
 namespace abacoc
@@ -21,8 +22,8 @@ namespace abacoc
 		Model(const Parameters &parameters);
 		Model(const Parameters &parameters, Searcher* searcher, BallPredictor* ball_predictor);
 		~Model() {};
-		void train(const Sample &sample);
-		void predict(const Sample &sample, int &class_id, double &confidence);
+		void train(const Video &sample);
+		void predict(const Video &sample, int &class_id, double &confidence);
 	};
 }
 

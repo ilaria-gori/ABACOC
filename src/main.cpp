@@ -5,6 +5,7 @@
 #include "utility.h"
 #include "exhaustiveSearcher.h"
 #include "maxBallPredictor.h"
+#include "randomGenerator.h"
 
 using namespace abacoc;
 
@@ -20,21 +21,19 @@ int main(int argc, char* argv[])
 	//this reads the dataset in a convenient format (each class folder contains files with features as
 	//lines of doubles) and, if requested by the user, normalize them and/or add the derivative. You can
 	//use the same function twice to get train and test and using "-train" and "-test" as second parameter
-	std::vector<Video> train = readDataset(line_args, "-train");
+	Dataset train = readDataset(line_args, "-train");
 	if (train.empty())
 	{
 		std::cout << "Error while reading dataset" << std::endl;
 		return 0;
 	}
 
-	std::vector<Video> test = readDataset(line_args, "-test");
+	Dataset test = readDataset(line_args, "-test");
 	if (test.empty())
 	{
 		std::cout << "Error while reading dataset" << std::endl;
 		return 0;
 	}
-
-	Parameters parameters = readParameters(line_args);
 
 	//You can implement your own Searcher. 
 	//Right now, we support ExhaustiveSearcher and KDTreeSearcher.
@@ -86,7 +85,15 @@ int main(int argc, char* argv[])
 		ball_pred = new MaxBallPredictor();
 	}
 
+	Parameters parameters(line_args);
 	Model model(parameters, searcher, ball_pred);
+	RandomGenerator rand_gen(train.size());
+	
+	for (size_t i = 0; i < train.size(); i++)
+	{
+		int rand_ind = rand_gen.getNext();
+		model.train(train[rand_ind]);
+	}
 
 	return 0;
 }

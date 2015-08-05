@@ -9,6 +9,7 @@ namespace abacoc
 {
 	//class Searcher;
 	typedef std::vector<double> Sample;
+	
 	enum norm_t{NONE, L1, L2};
 
 	struct Video
@@ -18,16 +19,17 @@ namespace abacoc
 		std::vector<Sample> samples;
 	};
 
-	struct Parameters
+	template<typename T>
+	void swap(std::vector<T> &data, int i, int j)
 	{
-		int n_classes;
-		int mod_size;
-		int intr_dimension;
-	};
+		T tmp = data[i];
+		data[i] = data[j];
+		data[j] = tmp;
+	}
 
-	std::vector<Video> readDataset(const std::map<std::string, std::string> &args, const std::string &file);
+	typedef std::vector<Video> Dataset;
 
-	Parameters readParameters(const std::map<std::string, std::string> &args);
+	Dataset readDataset(const std::map<std::string, std::string> &args, const std::string &file);
 
 	std::map<std::string, std::string> parseLine(int argc, char* argv[]);
 
