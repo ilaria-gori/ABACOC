@@ -40,6 +40,16 @@ namespace abacoc
 		return (ss.fail()) ? -1 : res;
 	}
 
+	VectorE vect2eigen(const std::vector<double> &v)
+	{
+		VectorE sample(v.size());
+		for (size_t i = 0; i < v.size(); i++)
+		{
+			sample(i) = v[i];
+		}
+		return sample;
+	}
+
 	bool readClassFolder(const std::string &class_path, const std::string &class_alias, int class_id, Dataset &dataset)
 	{
 		struct dirent *video_file;
@@ -87,7 +97,7 @@ namespace abacoc
 
 			std::ifstream file(video_name.c_str());
 			std::string line;
-			std::vector<Sample> features;
+			std::vector<VectorE> features;
 			while (file)
 			{
 				getline(file, line);
@@ -96,15 +106,16 @@ namespace abacoc
 					break;
 				}
 				std::stringstream string_line(line);
-				Sample sample;
+				std::vector<double> v;
 
 				while (string_line.good())
 				{
 					std::string substr;
 					getline(string_line, substr, ',');
-					sample.push_back(str2double(substr));
+					v.push_back(str2double(substr));
 				}
 
+				VectorE sample = vect2eigen(v);
 				features.push_back(sample);
 			}
 			video.samples = features;

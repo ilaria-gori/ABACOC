@@ -3,18 +3,21 @@
 
 #include <map>
 #include <vector>
+#include "distance.h"
 #include "dirent.h"
 
 namespace abacoc
 {
 	struct Parameters
 	{
-		int n_classes;
-		int mod_size;
+		unsigned int mod_size;
 		int intr_dimension;
+		Distance* distance;
+		int distance_exp;
 
 		Parameters();
 		Parameters(const std::map<std::string, std::string> &line_args);
+		~Parameters();
 	};
 }
 

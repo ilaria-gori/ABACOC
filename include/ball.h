@@ -16,12 +16,12 @@ namespace abacoc
 		double init_radius;
 		double radius;
 
-		Ball(const std::vector<double> &center, double radius, int n_classes);
+		Ball(const long ID, const Sample &center, double radius);
 		void update(const Sample &sample, const BallPredictor* ball_predictor);
-		std::vector<double> getCenter();
+		VectorE getCenter() const;
 
 	private:
-		std::vector<double> center;
+		VectorE center;
 
 		void shrinkRadius();
 		void updateRadius();

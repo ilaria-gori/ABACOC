@@ -3,20 +3,31 @@
 
 #include <map>
 #include <vector>
+#include <numeric>
+#include <Eigen/Dense>
 #include "dirent.h"
 
 namespace abacoc
 {
 	//class Searcher;
-	typedef std::vector<double> Sample;
-	
+	typedef Eigen::VectorXd VectorE;
+	const double eps = 0.0000000001;
 	enum norm_t{NONE, L1, L2};
 
 	struct Video
 	{
 		int class_id;
 		std::string alias;
-		std::vector<Sample> samples;
+		std::vector<VectorE> samples;
+	};
+
+	struct Sample
+	{
+		int class_id;
+		VectorE v;
+
+		Sample() {};
+		Sample(int class_id, const VectorE &v) : class_id(class_id), v(v) {}
 	};
 
 	template<typename T>
@@ -27,6 +38,53 @@ namespace abacoc
 		data[j] = tmp;
 	}
 
+	template<typename T>
+	std::vector<int> sortIndexesDesc(const std::vector<T> &v)
+	{
+		std::vector<int> idx(v.size());
+		std::iota(idx.begin(), idx.end(), 0);
+
+		std::sort(idx.begin(), idx.end(),
+			[&v](size_t i1, size_t i2) {v[i1] > v[i2]; });
+
+		return idx;
+	}
+
+
+	template<typename T>
+	std::vector<int> sortIndexesAsc(const std::vector<T> &v)
+	{
+		std::vector<int> idx(v.size());
+		std::iota(idx.begin(), idx.end(), 0);
+
+		std::sort(idx.begin(), idx.end(),
+			[&v](size_t i1, size_t i2) {v[i1] < v[i2]; });
+
+		return idx;
+	}
+
+	/*std::vector<int> sortIndexesDesc(const VectorE &v)
+	{
+		std::vector<int> idx(v.size());
+		std::iota(idx.begin(), idx.end(), 0);
+
+		std::sort(idx.begin(), idx.end(),
+			[&v](size_t i1, size_t i2) {v(i1) > v(i2); });
+
+		return idx;
+	}
+
+	std::vector<int> sortIndexesAsc(const VectorE &v)
+	{
+		std::vector<int> idx(v.size());
+		std::iota(idx.begin(), idx.end(), 0);
+
+		std::sort(idx.begin(), idx.end(),
+			[&v](size_t i1, size_t i2) {v(i1) < v(i2); });
+
+		return idx;
+	}*/
+
 	typedef std::vector<Video> Dataset;
 
 	Dataset readDataset(const std::map<std::string, std::string> &args, const std::string &file);
@@ -36,6 +94,8 @@ namespace abacoc
 	int str2int(const std::string &s);
 
 	double str2double(const std::string &s);
+
+	VectorE vect2eigen(const std::vector<double> &v);
 
 	void normalizeData(std::vector<Video> &dataset, norm_t norm_type);
 

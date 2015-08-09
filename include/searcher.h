@@ -2,6 +2,7 @@
 #define _SEARCHER_H_
 
 #include "ball.h"
+#include "parameters.h"
 #include "utility.h"
 
 namespace abacoc
@@ -10,16 +11,17 @@ namespace abacoc
 	{
 
 	public:
-		enum distance_t { EUCL };
-		Searcher(distance_t distance) : distance(distance) {}
-		virtual void knnsearch(const Sample &sample, int &ballID, double &distance) const = 0;
+		Searcher(const Parameters &parameters) : parameters(parameters) {}
+		virtual Ball* knnsearch(const Sample &sample, double &distance) const = 0;
 		virtual void addBall(const Ball &ball) = 0;
 		virtual void removeBall(const Ball &ball) = 0;
+		virtual int getNumBall() const = 0;
 		virtual ~Searcher() {}
 
-	private:
-		distance_t distance;
+	protected:
+		Parameters parameters;
 
+		virtual int findBallToRemove() const = 0;
 	};
 }
 

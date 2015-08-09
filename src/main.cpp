@@ -35,21 +35,12 @@ int main(int argc, char* argv[])
 		return 0;
 	}
 
+	Parameters parameters(line_args);
+
 	//You can implement your own Searcher. 
 	//Right now, we support ExhaustiveSearcher and KDTreeSearcher.
 	Searcher* searcher;
-	Searcher::distance_t dis = Searcher::EUCL;
 	std::map<std::string, std::string>::const_iterator it;
-	it = line_args.find("-dis");
-	if (it != line_args.end())
-	{
-		std::string d_type = it->second;
-		if (strcmp(d_type.c_str(), "eucl") == 0)
-		{
-			dis = Searcher::EUCL;
-		}
-	}
-
 	it = line_args.find("-s");
 	if (it != line_args.end())
 	{
@@ -60,12 +51,12 @@ int main(int argc, char* argv[])
 		}
 		else if (strcmp(search_type.c_str(), "ex"))
 		{
-			searcher = new ExhaustiveSearcher(dis);
+			searcher = new ExhaustiveSearcher(parameters);
 		}
 	}
 	else
 	{
-		searcher = new ExhaustiveSearcher(dis);
+		searcher = new ExhaustiveSearcher(parameters);
 	}
 
 	//You can implement your own ballPredictor.
@@ -85,7 +76,6 @@ int main(int argc, char* argv[])
 		ball_pred = new MaxBallPredictor();
 	}
 
-	Parameters parameters(line_args);
 	Model model(parameters, searcher, ball_pred);
 	RandomGenerator rand_gen(train.size());
 	
