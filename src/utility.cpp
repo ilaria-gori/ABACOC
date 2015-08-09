@@ -40,6 +40,14 @@ namespace abacoc
 		return (ss.fail()) ? -1 : res;
 	}
 
+	double randUniform(double lower, double upper)
+	{
+		std::random_device rd;
+		std::mt19937 gen(rd());
+		std::uniform_real_distribution<> dis(lower, upper);
+		return dis(gen);
+	}
+
 	VectorE vect2eigen(const std::vector<double> &v)
 	{
 		VectorE sample(v.size());

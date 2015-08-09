@@ -21,7 +21,7 @@ namespace abacoc
 	protected:
 		Parameters parameters;
 
-		virtual int findBallToRemove() const = 0;
+		virtual int findBallToRemove() = 0;
 	};
 }
 

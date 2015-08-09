@@ -7,7 +7,7 @@ namespace abacoc
 		balls.reserve(parameters.mod_size);
 		if (parameters.mod_size != INT_MAX)
 		{
-			p.resize(parameters.mod_size, 0);
+			prob.resize(parameters.mod_size, 0.0);
 		}
 	}
 
@@ -29,9 +29,30 @@ namespace abacoc
 		}
 	}
 
-	int ExhaustiveSearcher::findBallToRemove() const
+	int ExhaustiveSearcher::findBallToRemove()
 	{
-		//std::transform(balls.begin(), balls.end(), std::begin(p), [](Ball b) ->double {return (double)b.errors; });
+		std::transform(balls.begin(), balls.end(), prob.begin(), [](Ball b) ->double {return (double)b.errors; });
+		double totProb = (double)(std::accumulate(prob.begin(), prob.end(), 0.0) + balls.size());
+		std::transform(prob.begin(), prob.end(), prob.begin(),
+			[totProb](double val) -> double 
+			{return (val+1) / totProb; });
+		
+		std::vector<int> indexes = sortIndexesDesc(prob);
+		double partialSum = 0;
+		std::transform(prob.begin(), prob.end(), prob.begin(),
+			[&partialSum](double val) -> double
+			{partialSum += val;
+			return partialSum; });
+
+		double random = randUniform(0.0, 1.0);
+		for (auto el : indexes)
+		{
+			if (random < prob[el])
+			{
+				return el;
+			}
+		}
+
 		return 0;
 	}
 

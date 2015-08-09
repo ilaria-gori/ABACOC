@@ -8,9 +8,10 @@ namespace abacoc
 	class ExhaustiveSearcher : public Searcher
 	{
 		std::vector<Ball> balls;
-		Eigen::VectorXd p;
+		std::vector<double> prob;
 
 	public:
+
 		ExhaustiveSearcher(const Parameters &parameters);
 		Ball* knnsearch(const Sample &sample, double &distance) const;
 		void addBall(const Ball &ball);
@@ -19,7 +20,7 @@ namespace abacoc
 		~ExhaustiveSearcher();
 
 	protected:
-		int findBallToRemove() const;
+		int findBallToRemove();
 	};
 }
 
