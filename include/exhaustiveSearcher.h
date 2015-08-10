@@ -1,6 +1,7 @@
 #ifndef _EXHAUSTIVE_SEARCHER_H
 #define _EXHAUSTIVE_SEARCHER_H
 
+#include <valarray>
 #include "searcher.h"
 
 namespace abacoc
@@ -8,7 +9,7 @@ namespace abacoc
 	class ExhaustiveSearcher : public Searcher
 	{
 		std::vector<Ball> balls;
-		std::vector<double> prob;
+		std::valarray<double> prob;
 
 	public:
 

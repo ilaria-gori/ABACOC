@@ -31,23 +31,17 @@ namespace abacoc
 
 	int ExhaustiveSearcher::findBallToRemove()
 	{
-		std::transform(balls.begin(), balls.end(), prob.begin(), [](Ball b) ->double {return (double)b.errors; });
-		double totProb = (double)(std::accumulate(prob.begin(), prob.end(), 0.0) + balls.size());
-		std::transform(prob.begin(), prob.end(), prob.begin(),
-			[totProb](double val) -> double 
-			{return (val+1) / totProb; });
+		std::transform(balls.begin(), balls.end(), std::begin(prob), [](Ball b) ->double {return (double)b.errors; });
+		prob = (prob + 1.0) / (prob.sum() + balls.size());
 		
 		std::vector<int> indexes = sortIndexesDesc(prob);
-		double partialSum = 0;
-		std::transform(prob.begin(), prob.end(), prob.begin(),
-			[&partialSum](double val) -> double
-			{partialSum += val;
-			return partialSum; });
+		std::valarray<double> sums(prob);
+		std::partial_sum(std::begin(prob), std::end(prob), std::begin(sums));
 
 		double random = randUniform(0.0, 1.0);
 		for (auto el : indexes)
 		{
-			if (random < prob[el])
+			if (random < sums[el])
 			{
 				return el;
 			}

@@ -6,6 +6,7 @@
 #include <numeric>
 #include <random>
 #include <iostream>
+#include <valarray>
 #include <Eigen/Dense>
 #include "dirent.h"
 
@@ -43,7 +44,7 @@ namespace abacoc
 	double randUniform(double lower, double upper);
 
 	template<typename T>
-	std::vector<int> sortIndexesDesc(const std::vector<T> &v)
+	std::vector<int> sortIndexesDesc(const std::valarray<T> v)
 	{
 		std::vector<int> idx(v.size());
 		std::iota(idx.begin(), idx.end(), 0);
@@ -54,6 +55,29 @@ namespace abacoc
 		return idx;
 	}
 
+	template<typename T>
+	std::vector<int> sortIndexesAsc(const std::valarray<T> v)
+	{
+		std::vector<int> idx(v.size());
+		std::iota(idx.begin(), idx.end(), 0);
+
+		std::sort(idx.begin(), idx.end(),
+			[&v](size_t i1, size_t i2) {return v[i1] < v[i2]; });
+
+		return idx;
+	}
+
+	template<typename T>
+	std::vector<int> sortIndexesDesc(const std::vector<T> &v)
+	{
+		std::vector<int> idx(v.size());
+		std::iota(idx.begin(), idx.end(), 0);
+
+		std::sort(idx.begin(), idx.end(),
+			[&v](size_t i1, size_t i2) {return v[i1] > v[i2]; });
+
+		return idx;
+	}
 
 	template<typename T>
 	std::vector<int> sortIndexesAsc(const std::vector<T> &v)
