@@ -7,7 +7,8 @@ namespace abacoc
 {
 	class MaxBallPredictor : public BallPredictor
 	{
-		bool predict(const Ball &ball, const Sample &sample);
+	public:
+		bool predict(const Ball &ball, const Sample &sample) const;
 	};
 }
 

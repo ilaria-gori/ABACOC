@@ -12,10 +12,10 @@ namespace abacoc
 
 	public:
 		Searcher(const Parameters &parameters) : parameters(parameters) {}
-		virtual Ball* knnsearch(const Sample &sample, double &distance) const = 0;
+		virtual Ball* knnsearch(const Sample &sample, double &distance) = 0;
 		virtual void addBall(const Ball &ball) = 0;
 		virtual void removeBall(const Ball &ball) = 0;
-		virtual int getNumBall() const = 0;
+		virtual long getNumBall() const = 0;
 		virtual ~Searcher() {}
 
 	protected:

@@ -24,4 +24,24 @@ namespace abacoc
 		return rand_num;
 	}
 
+	FooGenerator::FooGenerator(int ind_max, int n_classes) : n_classes(n_classes)
+	{
+		indexes.resize(ind_max);
+		int n_ex_per_class = ind_max / n_classes;
+		int iter = 0;
+		for (int i = 0; i < n_ex_per_class; i++)
+		{
+			for (int j = 0; j < n_classes; j++)
+			{
+				indexes[iter++] = i + (j*n_ex_per_class);
+			}
+		}
+	}
+
+	int FooGenerator::getNext()
+	{
+		int ind = indexes[0];
+		indexes.pop_front();
+		return ind;
+	}
 }

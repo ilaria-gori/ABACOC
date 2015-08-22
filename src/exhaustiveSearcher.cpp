@@ -4,16 +4,30 @@ namespace abacoc
 {
 	ExhaustiveSearcher::ExhaustiveSearcher(const Parameters &parameters) : Searcher(parameters)
 	{
-		balls.reserve(parameters.mod_size);
 		if (parameters.mod_size != INT_MAX)
 		{
+			balls.reserve(parameters.mod_size);
 			prob.resize(parameters.mod_size, 0.0);
 		}
 	}
 
-	Ball* ExhaustiveSearcher::knnsearch(const Sample &sample, double &distance) const
+	Ball* ExhaustiveSearcher::knnsearch(const Sample &sample, double &distance)
 	{
-		return nullptr;
+		Ball* closest = nullptr;
+		double min_distance = std::numeric_limits<double>::infinity();
+		int min_index = 0;
+
+		for (size_t i = 0; i < balls.size(); i++)
+		{
+			double dist = parameters.distance->computeDistance(balls[i].getCenter(), sample.v);
+			if (dist < min_distance)
+			{
+				min_distance = dist;
+				min_index = i;
+			}
+		}
+		distance = min_distance;
+		return &balls[min_index];
 	}
 
 	void ExhaustiveSearcher::addBall(const Ball &ball)
@@ -50,9 +64,9 @@ namespace abacoc
 		return 0;
 	}
 
-	int ExhaustiveSearcher::getNumBall() const
+	long ExhaustiveSearcher::getNumBall() const
 	{
-		return balls.size();
+		return (long)balls.size();
 	}
 
 	void ExhaustiveSearcher::removeBall(const Ball &ball)

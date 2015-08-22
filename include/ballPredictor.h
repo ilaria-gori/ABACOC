@@ -9,7 +9,8 @@ namespace abacoc
 
 	class BallPredictor
 	{
-		virtual bool predict(const Ball &ball, const Sample &sample) = 0;
+	public:
+		virtual bool predict(const Ball &ball, const Sample &sample) const = 0;
 	};
 }
 

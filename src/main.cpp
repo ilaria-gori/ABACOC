@@ -35,7 +35,7 @@ void testAddBall()
 
 int main(int argc, char* argv[])
 {
-	testAddBall();
+	//testAddBall();
 	
 	std::map<std::string, std::string> line_args;
 
@@ -105,9 +105,16 @@ int main(int argc, char* argv[])
 	Model model(parameters, searcher, ball_pred);
 	RandomGenerator rand_gen(train.size());
 	
-	for (size_t i = 0; i < train.size(); i++)
+	/*for (size_t i = 0; i < train.size(); i++)
 	{
 		int rand_ind = rand_gen.getNext();
+		model.train(train[rand_ind]);
+	}*/
+
+	FooGenerator foo_gen(train.size(), 9);
+	for (size_t i = 0; i < train.size(); i++)
+	{
+		int rand_ind = foo_gen.getNext();
 		model.train(train[rand_ind]);
 	}
 

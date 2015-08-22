@@ -10,30 +10,31 @@ namespace abacoc
 {
 	Parameters::Parameters() : mod_size(INT_MAX), intr_dimension(2), distance(nullptr), distance_exp(2)
 	{
-
+		distance = new EuclDistance();
 	}
 
 	Parameters::Parameters(const std::map<std::string, std::string> &line_args)
 	{
 		std::map<std::string, std::string>::const_iterator it;
-		int intr_dim = 2;
+		this->intr_dimension = 2;
 		it = line_args.find("-dim");
 		if (it != line_args.end())
 		{
 			int tmp = str2int(it->second);
 			if (tmp != -1)
-				intr_dim = tmp;
+				this->intr_dimension = tmp;
 		}
 
-		int m_size = INT_MAX;
+		this->mod_size = INT_MAX;
 		it = line_args.find("-msize");
 		if (it != line_args.end())
 		{
 			int tmp = str2int(it->second);
 			if (tmp != -1)
-				m_size = tmp;
+				this->mod_size = tmp;
 		}
 
+		this->distance_exp = 2;
 		it = line_args.find("-dis_exp");
 		if (it != line_args.end())
 		{
@@ -54,16 +55,17 @@ namespace abacoc
 			std::string d_type = it->second;
 			if (strcmp(d_type.c_str(), "eucl") == 0)
 			{
-				distance = new EuclDistance();
+				this->distance = new EuclDistance();
 			}
 			else if (strcmp(d_type.c_str(), "mink") == 0)
 			{
-				distance = new MinkDistance(distance_exp);
+				this->distance = new MinkDistance(distance_exp);
 			}
 		}
-
-		this->intr_dimension = intr_dim;
-		this->mod_size = m_size;
+		else
+		{
+			this->distance = new EuclDistance();
+		}
 	}
 
 	Parameters::~Parameters()

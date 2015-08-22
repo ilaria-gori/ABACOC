@@ -27,7 +27,20 @@ namespace abacoc
 		}
 		for (size_t i = iter; i < video.samples.size(); i++)
 		{
-
+			double distance = 0;
+			Sample s(video.class_id, video.samples[i]);
+			Ball* ball = searcher->knnsearch(s, distance);
+			//the sample is in the ball
+			if (distance < ball->radius)
+			{
+				ball->update(s, ball_predictor, parameters);
+			}
+			else
+			{
+				double init_radius = computeInitRadius(s.v, ball->getCenter());
+				Ball new_ball(searcher->getNumBall(), s, init_radius);
+				searcher->addBall(new_ball);
+			}
 		}
 	}
 

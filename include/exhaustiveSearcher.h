@@ -2,6 +2,7 @@
 #define _EXHAUSTIVE_SEARCHER_H
 
 #include <valarray>
+#include <limits>
 #include "searcher.h"
 
 namespace abacoc
@@ -14,10 +15,10 @@ namespace abacoc
 	public:
 
 		ExhaustiveSearcher(const Parameters &parameters);
-		Ball* knnsearch(const Sample &sample, double &distance) const;
+		Ball* knnsearch(const Sample &sample, double &distance);
 		void addBall(const Ball &ball);
 		void removeBall(const Ball &ball);
-		int getNumBall() const;
+		long getNumBall() const;
 		~ExhaustiveSearcher();
 
 	protected:
