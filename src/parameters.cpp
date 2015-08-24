@@ -70,7 +70,11 @@ namespace abacoc
 
 	Parameters::~Parameters()
 	{
-		delete distance;
+		if (distance != nullptr)
+		{
+			delete distance;
+			distance = nullptr;
+		}
 	}
 }
 

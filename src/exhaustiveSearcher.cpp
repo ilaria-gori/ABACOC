@@ -2,12 +2,12 @@
 
 namespace abacoc
 {
-	ExhaustiveSearcher::ExhaustiveSearcher(const Parameters &parameters) : Searcher(parameters)
+	ExhaustiveSearcher::ExhaustiveSearcher(const Parameters* parameters) : Searcher(parameters)
 	{
-		if (parameters.mod_size != INT_MAX)
+		if (parameters->mod_size != INT_MAX)
 		{
-			balls.reserve(parameters.mod_size);
-			prob.resize(parameters.mod_size, 0.0);
+			balls.reserve(parameters->mod_size);
+			prob.resize(parameters->mod_size, 0.0);
 		}
 	}
 
@@ -19,7 +19,7 @@ namespace abacoc
 
 		for (size_t i = 0; i < balls.size(); i++)
 		{
-			double dist = parameters.distance->computeDistance(balls[i].getCenter(), sample.v);
+			double dist = parameters->distance->computeDistance(balls[i].getCenter(), sample.v);
 			if (dist < min_distance)
 			{
 				min_distance = dist;
@@ -32,7 +32,7 @@ namespace abacoc
 
 	void ExhaustiveSearcher::addBall(const Ball &ball)
 	{
-		if (balls.size() < parameters.mod_size || parameters.mod_size == INT_MAX)
+		if (balls.size() < parameters->mod_size || parameters->mod_size == INT_MAX)
 		{
 			balls.push_back(ball);
 		}
@@ -76,5 +76,17 @@ namespace abacoc
 	ExhaustiveSearcher::~ExhaustiveSearcher()
 	{
 
+	}
+
+	void ExhaustiveSearcher::printBalls() const
+	{
+		for_each(balls.begin(), balls.end(), [](Ball b) {b.printBall(); });
+	}
+
+	void ExhaustiveSearcher::saveBalls(const std::string &file) const
+	{
+		std::ofstream output(file);
+		for_each(balls.begin(), balls.end(), [&output](Ball b) {b.saveBall(output); });
+		output.close();
 	}
 }

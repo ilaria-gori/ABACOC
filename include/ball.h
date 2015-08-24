@@ -1,6 +1,8 @@
 #ifndef _BALL_H_
 #define _BALL_H_
 
+#include <iostream>
+#include <fstream>
 #include "utility.h"
 #include "parameters.h"
 
@@ -22,6 +24,8 @@ namespace abacoc
 		Ball(const long ID, const Sample &center, double radius);
 		void update(const Sample &sample, const BallPredictor* ball_predictor, const Parameters &par);
 		VectorE getCenter() const;
+		void printBall() const;
+		void saveBall(std::ofstream &file) const;
 
 	private:
 		VectorE center;

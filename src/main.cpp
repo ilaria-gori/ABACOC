@@ -13,7 +13,7 @@ void testAddBall()
 {
 	Parameters parameters;
 	parameters.mod_size = 2;
-	ExhaustiveSearcher* searcher = new ExhaustiveSearcher(parameters);
+	ExhaustiveSearcher* searcher = new ExhaustiveSearcher(&parameters);
 	Sample sample0; sample0.class_id = 0;
 	VectorE center0(2); center0(0) = 0.0; center0(1) = 0.0;
 	sample0.v = center0;
@@ -77,12 +77,12 @@ int main(int argc, char* argv[])
 		}
 		else if (strcmp(search_type.c_str(), "ex"))
 		{
-			searcher = new ExhaustiveSearcher(parameters);
+			searcher = new ExhaustiveSearcher(&parameters);
 		}
 	}
 	else
 	{
-		searcher = new ExhaustiveSearcher(parameters);
+		searcher = new ExhaustiveSearcher(&parameters);
 	}
 
 	//You can implement your own ballPredictor.
@@ -102,10 +102,10 @@ int main(int argc, char* argv[])
 		ball_pred = new MaxBallPredictor();
 	}
 
-	Model model(parameters, searcher, ball_pred);
-	RandomGenerator rand_gen(train.size());
+	Model model(&parameters, searcher, ball_pred);
+	/*RandomGenerator rand_gen(train.size());
 	
-	/*for (size_t i = 0; i < train.size(); i++)
+	for (size_t i = 0; i < train.size(); i++)
 	{
 		int rand_ind = rand_gen.getNext();
 		model.train(train[rand_ind]);
@@ -117,6 +117,9 @@ int main(int argc, char* argv[])
 		int rand_ind = foo_gen.getNext();
 		model.train(train[rand_ind]);
 	}
+
+	std::string out = "C:\\Users\\Ilaria\\Desktop\\output.txt";
+	model.save(out);
 
 	return 0;
 }

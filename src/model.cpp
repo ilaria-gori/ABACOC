@@ -2,13 +2,13 @@
 
 namespace abacoc
 {
-	Model::Model(const Parameters &parameters) : parameters(parameters), searcher(nullptr), ball_predictor(nullptr)
+	Model::Model(const Parameters* parameters) : parameters(parameters), searcher(nullptr), ball_predictor(nullptr)
 	{
 		searcher = new ExhaustiveSearcher(parameters);
 		ball_predictor = new MaxBallPredictor();
 	}
 
-	Model::Model(const Parameters &parameters, Searcher* searcher, BallPredictor* ball_predictor) : parameters(parameters), searcher(searcher), ball_predictor(ball_predictor)
+	Model::Model(const Parameters* parameters, Searcher* searcher, BallPredictor* ball_predictor) : parameters(parameters), searcher(searcher), ball_predictor(ball_predictor)
 	{
 	}
 
@@ -33,7 +33,7 @@ namespace abacoc
 			//the sample is in the ball
 			if (distance < ball->radius)
 			{
-				ball->update(s, ball_predictor, parameters);
+				ball->update(s, ball_predictor, *parameters);
 			}
 			else
 			{
@@ -46,12 +46,17 @@ namespace abacoc
 
 	double Model::computeInitRadius(const VectorE &sample1, const VectorE &sample2) const
 	{
-		return parameters.distance->computeDistance(sample1, sample2);
+		return parameters->distance->computeDistance(sample1, sample2);
 	}
 
 	Model::~Model()
 	{
 		delete searcher;
 		delete ball_predictor;
+	}
+
+	void Model::save(const std::string &file) const
+	{
+		searcher->saveBalls(file);
 	}
 }

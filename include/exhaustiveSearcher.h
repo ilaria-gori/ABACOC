@@ -14,11 +14,13 @@ namespace abacoc
 
 	public:
 
-		ExhaustiveSearcher(const Parameters &parameters);
+		ExhaustiveSearcher(const Parameters* parameters);
 		Ball* knnsearch(const Sample &sample, double &distance);
 		void addBall(const Ball &ball);
 		void removeBall(const Ball &ball);
 		long getNumBall() const;
+		void printBalls() const;
+		void saveBalls(const std::string &file) const;
 		~ExhaustiveSearcher();
 
 	protected:
