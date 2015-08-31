@@ -27,6 +27,7 @@ namespace abacoc
 		void train(const Video &video);
 		void predict(const Video &video, int &class_id, double &confidence);
 		void save(const std::string &file) const;
+		bool compareOutput(const MatlabModel &m) const;
 	};
 }
 

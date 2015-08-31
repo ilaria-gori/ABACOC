@@ -17,6 +17,15 @@ namespace abacoc
 	const double eps = 0.0000000001;
 	enum norm_t{NONE, L1, L2};
 
+	struct MatlabModel
+	{
+		std::vector<int> errors;
+		std::vector<int> n_x_s;
+		std::vector<int> n_centre_upd;
+		std::vector<double> eps_b;
+		std::vector<double> eps_start;
+	};
+
 	struct Video
 	{
 		int class_id;

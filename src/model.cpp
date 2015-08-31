@@ -27,6 +27,7 @@ namespace abacoc
 		}
 		for (size_t i = iter; i < video.samples.size(); i++)
 		{
+			std::cout << video.samples[i] << std::endl;
 			double distance = 0;
 			Sample s(video.class_id, video.samples[i]);
 			Ball* ball = searcher->knnsearch(s, distance);
@@ -58,5 +59,18 @@ namespace abacoc
 	void Model::save(const std::string &file) const
 	{
 		searcher->saveBalls(file);
+	}
+
+	bool Model::compareOutput(const MatlabModel &m) const
+	{
+		for (int i = 0; i < searcher->getNumBall(); i++)
+		{
+			Ball b = searcher->getBalls()[i];
+			if (b.errors != m.errors[i] || b.n_updates != m.n_centre_upd[i] || b.tot_samples != m.n_x_s[i] || (b.init_radius-m.eps_start[i])>0.001 || (b.radius-m.eps_b[i])>0.001)
+			{
+				return false;
+			}
+		}
+		return true;
 	}
 }

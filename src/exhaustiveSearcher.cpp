@@ -89,4 +89,9 @@ namespace abacoc
 		for_each(balls.begin(), balls.end(), [&output](Ball b) {b.saveBall(output); });
 		output.close();
 	}
+
+	std::vector<Ball> ExhaustiveSearcher::getBalls() const
+	{
+		return balls;
+	}
 }

@@ -33,6 +33,50 @@ void testAddBall()
 	searcher->addBall(ball2);
 }
 
+std::vector<MatlabModel> readFromFile(const std::string &matFile)
+{
+	std::vector<MatlabModel> models;
+	std::ifstream myfile(matFile);
+	std::string line;
+	while (std::getline(myfile, line))
+	{
+		MatlabModel m;
+		std::vector<int> err;
+		std::istringstream iss(line);
+		std::copy(std::istream_iterator<int>(iss), std::istream_iterator<int>(), std::back_inserter(err));
+		m.errors = err;
+
+		std::getline(myfile, line);
+		std::vector<int> n_x_s;
+		std::istringstream iss1(line);
+		std::copy(std::istream_iterator<int>(iss1), std::istream_iterator<int>(), std::back_inserter(n_x_s));
+		m.n_x_s = n_x_s;
+
+		std::getline(myfile, line);
+		std::vector<int> n_centre_up;
+		std::istringstream iss2(line);
+		std::copy(std::istream_iterator<int>(iss2), std::istream_iterator<int>(), std::back_inserter(n_centre_up));
+		m.n_centre_upd = n_centre_up;
+
+		std::getline(myfile, line);
+		std::vector<double> eps_b;
+		std::istringstream iss3(line);
+		std::copy(std::istream_iterator<double>(iss3), std::istream_iterator<double>(), std::back_inserter(eps_b));
+		m.eps_b = eps_b;
+
+		std::getline(myfile, line);
+		std::vector<double> eps_start;
+		std::istringstream iss4(line);
+		std::copy(std::istream_iterator<double>(iss4), std::istream_iterator<double>(), std::back_inserter(eps_start));
+		m.eps_start = eps_start;
+
+		models.push_back(m);
+	}
+
+	myfile.close();
+	return models;
+}
+
 int main(int argc, char* argv[])
 {
 	//testAddBall();
@@ -102,6 +146,8 @@ int main(int argc, char* argv[])
 		ball_pred = new MaxBallPredictor();
 	}
 
+	std::string matlab_file = "C:\\Users\\Ilaria\\Desktop\\matlab.txt";
+	std::vector<MatlabModel> models_to_compare = readFromFile(matlab_file);
 	Model model(&parameters, searcher, ball_pred);
 	/*RandomGenerator rand_gen(train.size());
 	
@@ -114,8 +160,14 @@ int main(int argc, char* argv[])
 	FooGenerator foo_gen(train.size(), 9);
 	for (size_t i = 0; i < train.size(); i++)
 	{
+		if (i == 12)
+			printf("here\n");
 		int rand_ind = foo_gen.getNext();
 		model.train(train[rand_ind]);
+		/*if (!model.compareOutput(models_to_compare[i]))
+		{
+			printf("iter %d is different\n", i);
+		}*/
 	}
 
 	std::string out = "C:\\Users\\Ilaria\\Desktop\\output.txt";

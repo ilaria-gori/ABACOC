@@ -21,6 +21,7 @@ namespace abacoc
 		long getNumBall() const;
 		void printBalls() const;
 		void saveBalls(const std::string &file) const;
+		std::vector<Ball> getBalls() const;
 		~ExhaustiveSearcher();
 
 	protected:

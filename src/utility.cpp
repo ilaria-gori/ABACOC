@@ -222,11 +222,6 @@ namespace abacoc
 			}
 		}
 
-		if (normalize_data)
-		{
-			normalizeData(dataset, norm_type);
-		}
-
 		bool add_derivative = false;
 		it = line_args.find("-t");
 		if ((it != line_args.end()))
@@ -239,17 +234,35 @@ namespace abacoc
 			addDerivative(dataset, norm_type);
 		}
 
+		if (normalize_data)
+		{
+			normalizeData(dataset, norm_type);
+		}
+
 		return dataset;
 	}
 
 	void normalizeData(std::vector<Video> &dataset, norm_t norm_type)
 	{
-		
+		for (size_t i = 0; i < dataset.size(); i++)
+		{
+			Video v = dataset[i];
+			for_each(v.samples.begin(), v.samples.end(), [](VectorE vect) { vect = vect / vect.norm(); });
+		}
 	}
 
 	void addDerivative(std::vector<Video> &dataset, norm_t norm_type)
 	{
+		if (norm_type != NONE)
+		{
+			normalizeData(dataset, norm_type);
+		}
 
+		for (size_t i = 0; i < dataset.size(); i++)
+		{
+			Video v = dataset[i];
+			
+		}
 	}
 }
 

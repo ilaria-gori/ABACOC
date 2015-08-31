@@ -18,6 +18,7 @@ namespace abacoc
 		virtual long getNumBall() const = 0;
 		virtual void printBalls() const = 0;
 		virtual void saveBalls(const std::string &file) const = 0;
+		virtual std::vector<Ball> getBalls() const = 0;
 		virtual ~Searcher() {}
 
 	protected:
