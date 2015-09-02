@@ -5,7 +5,12 @@ namespace abacoc
 {
 	bool MaxBallPredictor::predict(const Ball &ball, const Sample &sample) const
 	{
-		return (find(ball.winning_class.begin(), ball.winning_class.end(), sample.class_id) != ball.winning_class.end());
+		int max = 0;
+		int index = -1;
+		for_each(ball.class_samples.cbegin(), ball.class_samples.cend(), [&max, &index](std::pair<const int,int> class_sample)
+		{ if (class_sample.second > max) { max = class_sample.second; index = class_sample.first; } });
+
+		return sample.class_id == index;
 	}
 }
 

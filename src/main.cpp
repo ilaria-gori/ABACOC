@@ -160,18 +160,17 @@ int main(int argc, char* argv[])
 	FooGenerator foo_gen(train.size(), 9);
 	for (size_t i = 0; i < train.size(); i++)
 	{
-		if (i == 12)
-			printf("here\n");
 		int rand_ind = foo_gen.getNext();
 		model.train(train[rand_ind]);
-		/*if (!model.compareOutput(models_to_compare[i]))
+		if (!model.compareOutput(models_to_compare[i]))
 		{
 			printf("iter %d is different\n", i);
-		}*/
+			break;
+		}
 	}
 
-	std::string out = "C:\\Users\\Ilaria\\Desktop\\output.txt";
-	model.save(out);
+	//std::string out = "C:\\Users\\Ilaria\\Desktop\\output.txt";
+	//model.save(out);
 
 	return 0;
 }

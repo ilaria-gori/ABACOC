@@ -80,13 +80,13 @@ namespace abacoc
 
 	void ExhaustiveSearcher::printBalls() const
 	{
-		for_each(balls.begin(), balls.end(), [](Ball b) {b.printBall(); });
+		for_each(balls.cbegin(), balls.cend(), [](Ball b) {b.printBall(); });
 	}
 
 	void ExhaustiveSearcher::saveBalls(const std::string &file) const
 	{
 		std::ofstream output(file);
-		for_each(balls.begin(), balls.end(), [&output](Ball b) {b.saveBall(output); });
+		for_each(balls.cbegin(), balls.cend(), [&output](Ball b) {b.saveBall(output); });
 		output.close();
 	}
 

@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <fstream>
+#include <set>
 #include "utility.h"
 #include "parameters.h"
 
@@ -19,7 +20,6 @@ namespace abacoc
 		int n_updates;
 		double init_radius;
 		double radius;
-		std::vector<int> winning_class;
 
 		Ball(const long ID, const Sample &center, double radius);
 		void update(const Sample &sample, const BallPredictor* ball_predictor, const Parameters &par);

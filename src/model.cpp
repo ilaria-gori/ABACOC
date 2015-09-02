@@ -27,7 +27,7 @@ namespace abacoc
 		}
 		for (size_t i = iter; i < video.samples.size(); i++)
 		{
-			std::cout << video.samples[i] << std::endl;
+			//std::cout << video.samples[i] << std::endl;
 			double distance = 0;
 			Sample s(video.class_id, video.samples[i]);
 			Ball* ball = searcher->knnsearch(s, distance);
