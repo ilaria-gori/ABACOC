@@ -246,8 +246,8 @@ namespace abacoc
 	{
 		for (size_t i = 0; i < dataset.size(); i++)
 		{
-			Video v = dataset[i];
-			for_each(v.samples.begin(), v.samples.end(), [](VectorE vect) { vect = vect / vect.norm(); });
+			Video& v = dataset[i];
+			std::for_each(begin(v.samples), end(v.samples), [](VectorE &vect) { vect /= vect.norm(); });
 		}
 	}
 
@@ -260,18 +260,19 @@ namespace abacoc
 
 		for (size_t i = 0; i < dataset.size(); i++)
 		{
-			Video v = dataset[i];
-			VectorE joined_vectors;
-			joined_vectors << v.samples[0], v.samples[0];
-			v.samples[0] = joined_vectors;
+			Video& v = dataset[i];
 
-			for (size_t i = 1; i < v.samples.size(); i++)
+			for (size_t i = v.samples.size()-1; i > 0; i--)
 			{
 				VectorE diff = v.samples[i] - v.samples[i - 1];
-				VectorE conc_vectors;
-				conc_vectors << v.samples[i], diff;
-				v.samples[i] = conc_vectors;
+				VectorE joined_vectors(v.samples[i].size() * 2);
+				joined_vectors << v.samples[i], diff;
+				v.samples[i] = joined_vectors;
 			}
+
+			VectorE joined_vectors(v.samples[0].size() * 2);
+			joined_vectors << v.samples[0], v.samples[0];
+			v.samples[0] = joined_vectors;
 		}
 	}
 }

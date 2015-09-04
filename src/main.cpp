@@ -9,30 +9,6 @@
 
 using namespace abacoc;
 
-void testAddBall()
-{
-	Parameters parameters;
-	parameters.mod_size = 2;
-	ExhaustiveSearcher* searcher = new ExhaustiveSearcher(&parameters);
-	Sample sample0; sample0.class_id = 0;
-	VectorE center0(2); center0(0) = 0.0; center0(1) = 0.0;
-	sample0.v = center0;
-	Sample sample1; sample1.class_id = 3;
-	VectorE center1(2); center1(0) = 0.5; center1(1) = 0.8;
-	sample1.v = center1;
-	Sample sample2; sample2.class_id = 0;
-	VectorE center2(2); center2(0) = -0.5; center2(1) = 0.5;
-	sample2.v = center2;
-	Ball ball0(0, sample0, 0.1); ball0.errors = 2;
-	Ball ball1(1, sample1, 0.4); ball1.errors = 0;
-
-	searcher->addBall(ball0);
-	searcher->addBall(ball1);
-
-	Ball ball2(2, sample2, 0.2);
-	searcher->addBall(ball2);
-}
-
 std::vector<MatlabModel> readFromFile(const std::string &matFile)
 {
 	std::vector<MatlabModel> models;
@@ -79,8 +55,6 @@ std::vector<MatlabModel> readFromFile(const std::string &matFile)
 
 int main(int argc, char* argv[])
 {
-	//testAddBall();
-	
 	std::map<std::string, std::string> line_args;
 
 	if (argc > 1)
@@ -162,15 +136,16 @@ int main(int argc, char* argv[])
 	{
 		int rand_ind = foo_gen.getNext();
 		model.train(train[rand_ind]);
-		/*if (!model.compareOutput(models_to_compare[i]))
+		printf("iter %d\n", i);
+		if (!model.compareOutput(models_to_compare[i]))
 		{
-			printf("iter %d is different\n", i);
 			break;
-		}*/
+		}
 	}
 
-	//std::string out = "C:\\Users\\Ilaria\\Desktop\\output.txt";
-	//model.save(out);
+	//This is to save the model into a .txt file
+	std::string out = "C:\\Users\\Ilaria\\Desktop\\output.txt";
+	model.save(out);
 
 	return 0;
 }
