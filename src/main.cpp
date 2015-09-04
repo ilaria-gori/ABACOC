@@ -162,11 +162,11 @@ int main(int argc, char* argv[])
 	{
 		int rand_ind = foo_gen.getNext();
 		model.train(train[rand_ind]);
-		if (!model.compareOutput(models_to_compare[i]))
+		/*if (!model.compareOutput(models_to_compare[i]))
 		{
 			printf("iter %d is different\n", i);
 			break;
-		}
+		}*/
 	}
 
 	//std::string out = "C:\\Users\\Ilaria\\Desktop\\output.txt";

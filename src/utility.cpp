@@ -261,7 +261,17 @@ namespace abacoc
 		for (size_t i = 0; i < dataset.size(); i++)
 		{
 			Video v = dataset[i];
-			
+			VectorE joined_vectors;
+			joined_vectors << v.samples[0], v.samples[0];
+			v.samples[0] = joined_vectors;
+
+			for (size_t i = 1; i < v.samples.size(); i++)
+			{
+				VectorE diff = v.samples[i] - v.samples[i - 1];
+				VectorE conc_vectors;
+				conc_vectors << v.samples[i], diff;
+				v.samples[i] = conc_vectors;
+			}
 		}
 	}
 }
