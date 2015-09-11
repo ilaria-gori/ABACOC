@@ -12,23 +12,23 @@ namespace abacoc
 	{
 	}
 
-	void Model::train(const Video &video)
+	void Model::train(const Data &data)
 	{
 		int iter = 0;
-		classes.insert(video.class_id);
+		classes.insert(data.class_id);
 		if (searcher->getNumBall() == 0)
 		{
-			VectorE s = video.samples[0];
-			double init_radius = computeInitRadius(s, video.samples[1]);
-			Sample sample(video.class_id, s);
+			VectorE s = data.samples[0];
+			double init_radius = computeInitRadius(s, data.samples[1]);
+			Sample sample(data.class_id, s);
 			Ball ball(0, sample, init_radius);
 			searcher->addBall(ball);
 			iter = 1;
 		}
-		for (size_t i = iter; i < video.samples.size(); i++)
+		for (size_t i = iter; i < data.samples.size(); i++)
 		{
 			double distance = 0;
-			Sample s(video.class_id, video.samples[i]);
+			Sample s(data.class_id, data.samples[i]);
 			Ball* ball = searcher->knnsearch(s, distance);
 			//the sample is in the ball
 			if (distance < ball->radius)
@@ -42,6 +42,61 @@ namespace abacoc
 				searcher->addBall(new_ball);
 			}
 		}
+	}
+
+	int Model::predict(const Data &data, double &confidence) const
+	{
+		VectorE class_scores = VectorE::Zero(classes.size());
+		VectorE weighted_probs = VectorE::Zero(classes.size());
+		double sum_weights = 0;
+
+		for (size_t i = 0; i < data.samples.size(); i++)
+		{
+			double distance = 0;
+			Sample s(data.class_id, data.samples[i]);
+			Ball* ball = searcher->knnsearch(s, distance);
+
+			double kernel_weight = exp(-((max(0, distance - ball->radius)*max(0, distance - ball->radius))/2*distance*distance));
+			VectorE class_probs = VectorE::Zero(classes.size());
+
+			for (auto it = ball->class_samples.begin(); it != ball->class_samples.end(); it++)
+			{
+				class_probs(it->first) = (double)(it->second / ball->tot_samples);
+			}
+
+			class_scores += class_probs;
+			weighted_probs += (class_probs*kernel_weight);
+			sum_weights += kernel_weight;
+		}
+
+		VectorE class_confidence = weighted_probs/data.samples.size();
+		int index = -1;
+		double max_val = 0.0;
+		if (parameters->prediction_type == CONFIDENCE)
+		{
+			for (auto i = 0; i < class_confidence.size(); i++)
+			{
+				if (class_confidence(i) > max_val)
+				{
+					max_val = class_confidence(i);
+					index = i;
+				}
+			}
+		}
+		else
+		{
+			for (auto i = 0; i < class_scores.size(); i++)
+			{
+				if (class_scores(i) > max_val)
+				{
+					max_val = class_scores(i);
+					index = i;
+				}
+			}
+		}
+
+		confidence = class_confidence(index);
+		return index;
 	}
 
 	double Model::computeInitRadius(const VectorE &sample1, const VectorE &sample2) const

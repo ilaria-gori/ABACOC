@@ -8,7 +8,7 @@
 
 namespace abacoc
 {
-	Parameters::Parameters() : mod_size(INT_MAX), intr_dimension(2), distance(nullptr), distance_exp(2)
+	Parameters::Parameters() : mod_size(INT_MAX), intr_dimension(2), distance(nullptr), distance_exp(2), prediction_type(CONFIDENCE)
 	{
 		distance = new EuclDistance();
 	}
@@ -25,13 +25,26 @@ namespace abacoc
 				this->intr_dimension = tmp;
 		}
 
+		this->prediction_type = CONFIDENCE;
+		it = line_args.find("-p");
+		if (it != line_args.end())
+		{
+			int tmp = str2int(it->second);
+			if (tmp == 1)
+			{
+				this->prediction_type = SCORE;
+			}
+		}
+
 		this->mod_size = INT_MAX;
 		it = line_args.find("-msize");
 		if (it != line_args.end())
 		{
 			int tmp = str2int(it->second);
 			if (tmp != -1)
+			{
 				this->mod_size = tmp;
+			}
 		}
 
 		this->distance_exp = 2;

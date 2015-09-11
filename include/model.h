@@ -24,8 +24,8 @@ namespace abacoc
 		Model(const Parameters* parameters);
 		Model(const Parameters* parameters, Searcher* searcher, BallPredictor* ball_predictor);
 		~Model();
-		void train(const Video &video);
-		void predict(const Video &video, int &class_id, double &confidence);
+		void train(const Data &data);
+		int predict(const Data &data, double &confidence) const;
 		void save(const std::string &file) const;
 		bool compareOutput(const MatlabModel &m) const;
 	};

@@ -14,6 +14,7 @@ namespace abacoc
 		int intr_dimension;
 		Distance* distance;
 		int distance_exp;
+		pred_type prediction_type;
 
 		Parameters();
 		Parameters(const std::map<std::string, std::string> &line_args);

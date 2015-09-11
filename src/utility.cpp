@@ -58,6 +58,16 @@ namespace abacoc
 		return sample;
 	}
 
+	std::vector<double> eigen2vect(const VectorE &v)
+	{
+		std::vector<double> sample(v.size());
+		for (size_t i = 0; i < v.size(); i++)
+		{
+			sample[i] = v(i);
+		}
+		return sample;
+	}
+
 	bool readClassFolder(const std::string &class_path, const std::string &class_alias, int class_id, Dataset &dataset)
 	{
 		struct dirent *video_file;
@@ -81,9 +91,9 @@ namespace abacoc
 		bool init = true;
 		while (!done)
 		{
-			Video video;
-			video.alias = class_alias;
-			video.class_id = class_id;
+			Data data;
+			data.alias = class_alias;
+			data.class_id = class_id;
 
 			std::string video_name;
 			if (init)
@@ -126,8 +136,8 @@ namespace abacoc
 				VectorE sample = vect2eigen(v);
 				features.push_back(sample);
 			}
-			video.samples = features;
-			dataset.push_back(video);
+			data.samples = features;
+			dataset.push_back(data);
 		}
 		return true;
 	}
@@ -242,16 +252,16 @@ namespace abacoc
 		return dataset;
 	}
 
-	void normalizeData(std::vector<Video> &dataset, norm_t norm_type)
+	void normalizeData(Dataset &dataset, norm_t norm_type)
 	{
 		for (size_t i = 0; i < dataset.size(); i++)
 		{
-			Video& v = dataset[i];
-			std::for_each(begin(v.samples), end(v.samples), [](VectorE &vect) { vect /= vect.norm(); });
+			Data& data = dataset[i];
+			std::for_each(begin(data.samples), end(data.samples), [](VectorE &vect) { vect /= vect.norm(); });
 		}
 	}
 
-	void addDerivative(std::vector<Video> &dataset, norm_t norm_type)
+	void addDerivative(Dataset &dataset, norm_t norm_type)
 	{
 		if (norm_type != NONE)
 		{
@@ -260,17 +270,17 @@ namespace abacoc
 
 		for (size_t i = 0; i < dataset.size(); i++)
 		{
-			Video& v = dataset[i];
+			Data& data = dataset[i];
 
-			for (size_t i = v.samples.size()-1; i > 0; i--)
+			for (size_t i = data.samples.size() - 1; i > 0; i--)
 			{
-				VectorE diff = v.samples[i] - v.samples[i - 1];
-				VectorE joined_vectors(v.samples[i].size() * 2);
-				joined_vectors << v.samples[i], diff;
-				v.samples[i] = joined_vectors;
+				VectorE diff = data.samples[i] - data.samples[i - 1];
+				VectorE joined_vectors(data.samples[i].size() * 2);
+				joined_vectors << data.samples[i], diff;
+				data.samples[i] = joined_vectors;
 			}
 
-			v.samples.pop_front();
+			data.samples.pop_front();
 		}
 	}
 }

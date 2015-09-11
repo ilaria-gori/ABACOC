@@ -147,5 +147,19 @@ int main(int argc, char* argv[])
 	//std::string out = "C:\\Users\\Ilaria\\Desktop\\output.txt";
 	//model.save(out);
 
+	int correct_pred = 0;
+	for (size_t i = 0; i < test.size(); i++)
+	{
+		double confidence = 0;
+		int class_id = model.predict(test[i], confidence);
+
+		if (class_id == test[i].class_id)
+		{
+			correct_pred += 1;
+		}
+	}
+
+	double accuracy = correct_pred / test.size();
+
 	return 0;
 }

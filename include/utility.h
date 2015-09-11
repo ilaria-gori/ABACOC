@@ -17,6 +17,7 @@ namespace abacoc
 	typedef Eigen::VectorXd VectorE;
 	const double eps = 0.0000000001;
 	enum norm_t{NONE, L1, L2};
+	enum pred_type{CONFIDENCE, SCORE};
 
 	struct MatlabModel
 	{
@@ -27,7 +28,7 @@ namespace abacoc
 		std::vector<double> eps_start;
 	};
 
-	struct Video
+	struct Data
 	{
 		int class_id;
 		std::string alias;
@@ -123,7 +124,7 @@ namespace abacoc
 		return idx;
 	}*/
 
-	typedef std::vector<Video> Dataset;
+	typedef std::vector<Data> Dataset;
 
 	Dataset readDataset(const std::map<std::string, std::string> &args, const std::string &file);
 
@@ -135,9 +136,11 @@ namespace abacoc
 
 	VectorE vect2eigen(const std::vector<double> &v);
 
-	void normalizeData(std::vector<Video> &dataset, norm_t norm_type);
+	std::vector<double> eigen2vect(const VectorE &v);
 
-	void addDerivative(std::vector<Video> &dataset, norm_t norm_type);
+	void normalizeData(Dataset &dataset, norm_t norm_type);
+
+	void addDerivative(Dataset &dataset, norm_t norm_type);
 }
 
 #endif
