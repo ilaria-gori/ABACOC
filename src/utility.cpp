@@ -105,7 +105,7 @@ namespace abacoc
 
 			std::ifstream file(video_name.c_str());
 			std::string line;
-			std::vector<VectorE> features;
+			std::deque<VectorE> features;
 			while (file)
 			{
 				getline(file, line);
@@ -270,9 +270,7 @@ namespace abacoc
 				v.samples[i] = joined_vectors;
 			}
 
-			VectorE joined_vectors(v.samples[0].size() * 2);
-			joined_vectors << v.samples[0], v.samples[0];
-			v.samples[0] = joined_vectors;
+			v.samples.pop_front();
 		}
 	}
 }

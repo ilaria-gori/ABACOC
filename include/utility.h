@@ -3,6 +3,7 @@
 
 #include <map>
 #include <vector>
+#include <deque>
 #include <numeric>
 #include <random>
 #include <iostream>
@@ -30,7 +31,7 @@ namespace abacoc
 	{
 		int class_id;
 		std::string alias;
-		std::vector<VectorE> samples;
+		std::deque<VectorE> samples;
 	};
 
 	struct Sample
