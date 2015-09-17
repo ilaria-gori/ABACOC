@@ -56,12 +56,15 @@ namespace abacoc
 			Sample s(data.class_id, data.samples[i]);
 			Ball* ball = searcher->knnsearch(s, distance);
 
-			double kernel_weight = exp(-((max(0, distance - ball->radius)*max(0, distance - ball->radius))/2*distance*distance));
+			double exp_value = max(0, distance - ball->radius)*max(0, distance - ball->radius);
+			double den = 2 * ball->radius*ball->radius;
+
+			double kernel_weight = exp(- (exp_value / den));
 			VectorE class_probs = VectorE::Zero(classes.size());
 
 			for (auto it = ball->class_samples.begin(); it != ball->class_samples.end(); it++)
 			{
-				class_probs(it->first) = (double)(it->second / ball->tot_samples);
+				class_probs(it->first) = (double)it->second / (double)ball->tot_samples;
 			}
 
 			class_scores += class_probs;
@@ -70,6 +73,7 @@ namespace abacoc
 		}
 
 		VectorE class_confidence = weighted_probs/data.samples.size();
+
 		int index = -1;
 		double max_val = 0.0;
 		if (parameters->prediction_type == CONFIDENCE)

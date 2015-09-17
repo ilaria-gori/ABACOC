@@ -61,7 +61,7 @@ namespace abacoc
 	std::vector<double> eigen2vect(const VectorE &v)
 	{
 		std::vector<double> sample(v.size());
-		for (size_t i = 0; i < v.size(); i++)
+		for (auto i = 0; i < v.size(); i++)
 		{
 			sample[i] = v(i);
 		}

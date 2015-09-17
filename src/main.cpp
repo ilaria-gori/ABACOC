@@ -89,11 +89,7 @@ int main(int argc, char* argv[])
 	if (it != line_args.end())
 	{
 		std::string search_type = it->second;
-		if (strcmp(search_type.c_str(), "kdtree") == 0)
-		{
-			;
-		}
-		else if (strcmp(search_type.c_str(), "ex"))
+		if (strcmp(search_type.c_str(), "ex") == 0)
 		{
 			searcher = new ExhaustiveSearcher(&parameters);
 		}
@@ -159,7 +155,6 @@ int main(int argc, char* argv[])
 		}
 	}
 
-	double accuracy = correct_pred / test.size();
-
+	double accuracy = (double)correct_pred / (double)test.size();
 	return 0;
 }
