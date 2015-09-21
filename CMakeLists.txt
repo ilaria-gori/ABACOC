@@ -9,7 +9,7 @@ set(folder_header include/ball.h include/searcher.h include/ballPredictor.h incl
 set(folder_source src/main.cpp src/ball.cpp src/model.cpp src/exhaustiveSearcher.cpp src/maxBallPredictor.cpp src/utility.cpp src/parameters.cpp src/randomGenerator.cpp src/distance.cpp)
 
 if (WIN32)
-	set(folder_header ${folder_header} include/dirent.h)
+	set(folder_header ${folder_header} include/windows/dirent.h)
 endif ()
 
 source_group("Source Files" FILES ${folder_source})

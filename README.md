@@ -12,6 +12,9 @@ Rocco De Rosa, Nicolò Cesa-Bianchi, Ilaria Gori and Fabio Cuzzolin (2014), "Onl
 For Standard Classification:
 Rocco De Rosa, Francesco Orabona and Nicolò Cesa-Bianchi (2015), "The ABACOC Algorithm: a Novel Approach for Nonparametric Classification of Data Streams". Proc.The 2015 IEEE 15th International Conference on Data Mining (ICDM'15).
 
+## Dependencies
+The only dependence is Eigen. You should create an environment variable called EIGEN_ROOT, which points to the Eigen folder.
+
 ## Brief tutorial
 The objects to create are, in order:
 

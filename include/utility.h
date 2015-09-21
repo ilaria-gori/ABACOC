@@ -9,7 +9,12 @@
 #include <iostream>
 #include <valarray>
 #include <Eigen/Dense>
-#include "dirent.h"
+
+#ifdef _WIN32
+	#include "windows/dirent.h"
+#else
+	#include "dirent.h"
+#endif
 
 namespace abacoc
 {
