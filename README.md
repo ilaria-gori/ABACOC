@@ -1,5 +1,4 @@
 # ABACOC
-=============
 
 A C++ library for incremental, nonparametric classification.
 
@@ -23,7 +22,7 @@ We provide a simple program to read a set of feature vectors from file. In our s
 The Parameters data structure is initialized using the map structure created reading the command line. It contains:
 - mod_size, "-msize" in the command line, max number of balls in the model. The default is infinite.
 - intr_dimension, "-dim" in the command line, used to shrink the radius of the balls when there are errors. The default is 2.
-- prediction_type, "-p" in the command line. It can be confidence (0) or score (1). The default is confidence.
+- prediction_type, "-p" in the command line. It can be score (0) or confidence (1). The default is score.
 - distance, "-dis" in the command line. It can be Euclidean ("eucl") or Minkowski ("mink"). The default is Euclidean. 
 - distance_exp, "-dis_exp" in the command line. If used the Minkowski distance is used, this represents the exponent. The default is 2.
 

@@ -36,14 +36,14 @@ namespace abacoc
 				this->intr_dimension = tmp;
 		}
 
-		this->prediction_type = CONFIDENCE;
+		this->prediction_type = SCORE;
 		it = line_args.find("-p");
 		if (it != line_args.end())
 		{
 			int tmp = str2int(it->second);
 			if (tmp == 1)
 			{
-				this->prediction_type = SCORE;
+				this->prediction_type = CONFIDENCE;
 			}
 		}
 
