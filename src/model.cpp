@@ -77,7 +77,13 @@ namespace abacoc
 			Sample s(data.class_id, data.samples[i]);
 			Ball* ball = searcher->knnsearch(s, distance);
 
-			double exp_value = max(0, distance - ball->radius)*max(0, distance - ball->radius);
+			double maxval;
+			#ifdef _WIN32
+				maxval = max(0, distance - ball->radius);
+			#else
+				maxval = std::max(0, distance - ball->radius);
+			#endif
+			double exp_value = maxval*maxval;
 			double den = 2 * ball->radius*ball->radius;
 
 			double kernel_weight = exp(- (exp_value / den));

@@ -2,6 +2,7 @@
 #define _MODEL_H_
 
 #include <set>
+#include <algorithm>
 #include "ball.h"
 #include "maxBallPredictor.h"
 #include "parameters.h"

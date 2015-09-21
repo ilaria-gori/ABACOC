@@ -3,6 +3,9 @@ CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
 SET(PROJECTNAME ABACOC)
 PROJECT(${PROJECTNAME})
 
+ADD_DEFINITIONS(
+-std=c++0x)
+
 include_directories("$ENV{EIGEN_ROOT}")
 
 set(folder_header include/ball.h include/searcher.h include/ballPredictor.h include/model.h include/exhaustiveSearcher.h include/maxBallPredictor.h include/utility.h include/parameters.h include/randomGenerator.h include/distance.h)
