@@ -40,7 +40,7 @@ namespace abacoc
 					double init_radius = computeInitRadius(init_sample.v, data.samples[0]);
 					searcher->addBall(Ball(searcher->getNumBall(), init_sample, init_radius));
 					Sample sample(data.class_id, data.samples[0]);
-					Ball ball(0, sample, init_radius);
+					Ball ball(searcher->getNumBall(), sample, init_radius);
 					searcher->addBall(ball);
 					return;
 				}
@@ -79,9 +79,9 @@ namespace abacoc
 
 			double maxval;
 			#ifdef _WIN32
-				maxval = max(0, distance - ball->radius);
+				maxval = max(0.0, distance - ball->radius);
 			#else
-				maxval = std::max(0, distance - ball->radius);
+				maxval = std::max(0.0, distance - ball->radius);
 			#endif
 			double exp_value = maxval*maxval;
 			double den = 2 * ball->radius*ball->radius;
