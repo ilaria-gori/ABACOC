@@ -3,8 +3,11 @@ CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
 SET(PROJECTNAME ABACOC)
 PROJECT(${PROJECTNAME})
 
-ADD_DEFINITIONS(
--std=c++0x)
+ADD_DEFINITIONS(-std=c++0x)
+
+if(NOT ENV{EIGEN_ROOT})
+message(FATAL_ERROR "Could not find EIGEN_ROOT environment variable")
+endif()
 
 include_directories("$ENV{EIGEN_ROOT}")
 
