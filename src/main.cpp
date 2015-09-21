@@ -88,5 +88,6 @@ int main(int argc, char* argv[])
 	}
 
 	double accuracy = (double)correct_pred / (double)test.size();
+	std::cout << "Accuracy = " << accuracy << std::endl;
 	return 0;
 }
