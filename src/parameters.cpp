@@ -16,6 +16,17 @@ namespace abacoc
 	Parameters::Parameters(const std::map<std::string, std::string> &line_args)
 	{
 		std::map<std::string, std::string>::const_iterator it;
+		this->mod_size = INT_MAX;
+		it = line_args.find("-msize");
+		if (it != line_args.end())
+		{
+			int tmp = str2int(it->second);
+			if (tmp != -1)
+			{
+				this->mod_size = tmp;
+			}
+		}
+
 		this->intr_dimension = 2;
 		it = line_args.find("-dim");
 		if (it != line_args.end())
@@ -33,17 +44,6 @@ namespace abacoc
 			if (tmp == 1)
 			{
 				this->prediction_type = SCORE;
-			}
-		}
-
-		this->mod_size = INT_MAX;
-		it = line_args.find("-msize");
-		if (it != line_args.end())
-		{
-			int tmp = str2int(it->second);
-			if (tmp != -1)
-			{
-				this->mod_size = tmp;
 			}
 		}
 

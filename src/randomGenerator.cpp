@@ -26,6 +26,11 @@ namespace abacoc
 
 	SequentialGenerator::SequentialGenerator(int ind_max, int n_classes) : n_classes(n_classes)
 	{
+		if (ind_max <= 0)
+		{
+			printf("Empty set\n");
+			assert(ind_max > 0);
+		}
 		indexes.resize(ind_max);
 		int n_ex_per_class = ind_max / n_classes;
 		int iter = 0;

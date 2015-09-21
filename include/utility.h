@@ -13,20 +13,10 @@
 
 namespace abacoc
 {
-	//class Searcher;
 	typedef Eigen::VectorXd VectorE;
 	const double eps = 0.0000000001;
 	enum norm_t{NONE, L1, L2};
 	enum pred_type{CONFIDENCE, SCORE};
-
-	struct MatlabModel
-	{
-		std::vector<int> errors;
-		std::vector<int> n_x_s;
-		std::vector<int> n_centre_upd;
-		std::vector<double> eps_b;
-		std::vector<double> eps_start;
-	};
 
 	struct Data
 	{
@@ -34,6 +24,8 @@ namespace abacoc
 		std::string alias;
 		std::deque<VectorE> samples;
 	};
+
+	typedef std::vector<Data> Dataset;
 
 	struct Sample
 	{
@@ -51,8 +43,6 @@ namespace abacoc
 		data[i] = data[j];
 		data[j] = tmp;
 	}
-
-	double randUniform(double lower, double upper);
 
 	template<typename T>
 	std::vector<int> sortIndexesDesc(const std::valarray<T> v)
@@ -102,29 +92,7 @@ namespace abacoc
 		return idx;
 	}
 
-	/*std::vector<int> sortIndexesDesc(const VectorE &v)
-	{
-		std::vector<int> idx(v.size());
-		std::iota(idx.begin(), idx.end(), 0);
-
-		std::sort(idx.begin(), idx.end(),
-			[&v](size_t i1, size_t i2) {return v(i1) > v(i2); });
-
-		return idx;
-	}
-
-	std::vector<int> sortIndexesAsc(const VectorE &v)
-	{
-		std::vector<int> idx(v.size());
-		std::iota(idx.begin(), idx.end(), 0);
-
-		std::sort(idx.begin(), idx.end(),
-			[&v](size_t i1, size_t i2) {return v(i1) < v(i2); });
-
-		return idx;
-	}*/
-
-	typedef std::vector<Data> Dataset;
+	double randUniform(double lower, double upper);
 
 	Dataset readDataset(const std::map<std::string, std::string> &args, const std::string &file);
 

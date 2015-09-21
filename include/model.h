@@ -28,7 +28,6 @@ namespace abacoc
 		void train(const Data &data);
 		int predict(const Data &data, double &confidence) const;
 		void save(const std::string &file) const;
-		bool compareOutput(const MatlabModel &m) const;
 	};
 }
 

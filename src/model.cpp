@@ -140,16 +140,4 @@ namespace abacoc
 		searcher->saveBalls(file);
 	}
 
-	bool Model::compareOutput(const MatlabModel &m) const
-	{
-		for (int i = 0; i < searcher->getNumBall(); i++)
-		{
-			Ball b = searcher->getBalls()[i];
-			if (b.errors != m.errors[i] || b.n_updates != m.n_centre_upd[i] || b.tot_samples != m.n_x_s[i] || (b.init_radius-m.eps_start[i])>0.001 || (b.radius-m.eps_b[i])>0.001)
-			{
-				return false;
-			}
-		}
-		return true;
-	}
 }

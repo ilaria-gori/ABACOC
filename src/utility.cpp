@@ -77,7 +77,6 @@ namespace abacoc
 		std::ifstream file(class_path.c_str());
 		std::string line;
 		std::deque<VectorE> features;
-		getline(file, line);
 		while (file)
 		{
 			getline(file, line);

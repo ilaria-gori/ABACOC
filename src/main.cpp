@@ -9,52 +9,10 @@
 
 using namespace abacoc;
 
-std::vector<MatlabModel> readFromFile(const std::string &matFile)
-{
-	std::vector<MatlabModel> models;
-	std::ifstream myfile(matFile);
-	std::string line;
-	while (std::getline(myfile, line))
-	{
-		MatlabModel m;
-		std::vector<int> err;
-		std::istringstream iss(line);
-		std::copy(std::istream_iterator<int>(iss), std::istream_iterator<int>(), std::back_inserter(err));
-		m.errors = err;
-
-		std::getline(myfile, line);
-		std::vector<int> n_x_s;
-		std::istringstream iss1(line);
-		std::copy(std::istream_iterator<int>(iss1), std::istream_iterator<int>(), std::back_inserter(n_x_s));
-		m.n_x_s = n_x_s;
-
-		std::getline(myfile, line);
-		std::vector<int> n_centre_up;
-		std::istringstream iss2(line);
-		std::copy(std::istream_iterator<int>(iss2), std::istream_iterator<int>(), std::back_inserter(n_centre_up));
-		m.n_centre_upd = n_centre_up;
-
-		std::getline(myfile, line);
-		std::vector<double> eps_b;
-		std::istringstream iss3(line);
-		std::copy(std::istream_iterator<double>(iss3), std::istream_iterator<double>(), std::back_inserter(eps_b));
-		m.eps_b = eps_b;
-
-		std::getline(myfile, line);
-		std::vector<double> eps_start;
-		std::istringstream iss4(line);
-		std::copy(std::istream_iterator<double>(iss4), std::istream_iterator<double>(), std::back_inserter(eps_start));
-		m.eps_start = eps_start;
-
-		models.push_back(m);
-	}
-
-	myfile.close();
-	return models;
-}
-
 int main(int argc, char* argv[])
 {
+	//Command line args are saved in the following map and are used to initialize the 
+	//Parameters data structure
 	std::map<std::string, std::string> line_args;
 
 	if (argc > 1)
@@ -62,8 +20,8 @@ int main(int argc, char* argv[])
 		line_args = parseLine(argc, argv);
 	}
 
-	//this reads the dataset in a convenient format (each class folder contains files with features as
-	//lines of doubles) and, if requested by the user, normalize them and/or add the derivative. You can
+	//This reads the dataset in a convenient format and, if requested by the user, 
+	//normalize them and/or add the derivative. You can
 	//use the same function twice to get train and test and using "-train" and "-test" as second parameter
 	Dataset train = readDataset(line_args, "-train");
 	if (train.empty())
@@ -100,9 +58,8 @@ int main(int argc, char* argv[])
 		ball_pred = new MaxBallPredictor();
 	}
 
-	std::string matlab_file = "C:\\Users\\Ilaria\\Desktop\\matlab.txt";
-	std::vector<MatlabModel> models_to_compare = readFromFile(matlab_file);
 	Model model(&parameters, searcher, ball_pred);
+
 	/*RandomGenerator rand_gen(train.size());
 	
 	for (size_t i = 0; i < train.size(); i++)
@@ -111,21 +68,12 @@ int main(int argc, char* argv[])
 		model.train(train[rand_ind]);
 	}*/
 
-	SequentialGenerator foo_gen(train.size(), 9);
+	SequentialGenerator seq_gen(train.size(), 9);
 	for (size_t i = 0; i < train.size(); i++)
 	{
-		int rand_ind = foo_gen.getNext();
+		int rand_ind = seq_gen.getNext();
 		model.train(train[rand_ind]);
-		printf("iter %d\n", i);
-		if (!model.compareOutput(models_to_compare[i]))
-		{
-			break;
-		}
 	}
-
-	//This is to save the model into a .txt file
-	//std::string out = "C:\\Users\\Ilaria\\Desktop\\output.txt";
-	//model.save(out);
 
 	int correct_pred = 0;
 	for (size_t i = 0; i < test.size(); i++)
