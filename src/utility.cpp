@@ -68,81 +68,48 @@ namespace abacoc
 		return sample;
 	}
 
-	bool readClassFolder(const std::string &class_path, const std::string &class_alias, int class_id, Dataset &dataset)
+	bool readClassFile(const std::string &class_path, const std::string &class_alias, int class_id, Dataset &dataset)
 	{
-		struct dirent *video_file;
-		DIR *class_folder;
+		Data data;
+		data.alias = class_alias;
+		data.class_id = class_id;
 
-		class_folder = opendir(class_path.c_str());
-		if (class_folder == NULL)
+		std::ifstream file(class_path.c_str());
+		std::string line;
+		std::deque<VectorE> features;
+		getline(file, line);
+		while (file)
 		{
-			return false;
-		}
+			getline(file, line);
+			std::stringstream string_line(line);
+			std::vector<double> v;
 
-		while ((video_file = readdir(class_folder)))
-		{
-			if (strcmp(video_file->d_name, ".") == 0 || strcmp(video_file->d_name, "..") == 0)
-				continue;
-			else
-				break;
-		}
-
-		bool done = false;
-		bool init = true;
-		while (!done)
-		{
-			Data data;
-			data.alias = class_alias;
-			data.class_id = class_id;
-
-			std::string video_name;
-			if (init)
+			if (line.find_first_not_of(' ') != std::string::npos)
 			{
-				if (video_file->d_name != NULL)
-					video_name = class_path + "/" + video_file->d_name;
-
-				init = false;
-			}
-			else
-			{
-				if (!(video_file = readdir(class_folder)))
-				{
-					done = true;
-					break;
-				}
-				video_name = class_path + "/" + video_file->d_name;
-			}
-
-			std::ifstream file(video_name.c_str());
-			std::string line;
-			std::deque<VectorE> features;
-			while (file)
-			{
-				getline(file, line);
-				if (line == "")
-				{
-					break;
-				}
-				std::stringstream string_line(line);
-				std::vector<double> v;
-
 				while (string_line.good())
 				{
 					std::string substr;
-					getline(string_line, substr, ',');
+					getline(string_line, substr, ' ');
 					v.push_back(str2double(substr));
 				}
+			}
 
+			if (v.empty())
+			{
+				data.samples = features;
+				dataset.push_back(data);
+				features.clear();
+			}
+			else
+			{
 				VectorE sample = vect2eigen(v);
 				features.push_back(sample);
 			}
-			data.samples = features;
-			dataset.push_back(data);
 		}
 		return true;
 	}
 
-	Dataset readFolders(const std::string &path)
+	Dataset readFolder(const std::string &path)
 	{
 		Dataset dataset;
 
@@ -187,7 +154,7 @@ namespace abacoc
 				class_name = class_folder->d_name;
 			}
 
-			if (!readClassFolder(path + "/" + class_name, class_name, class_id, dataset))
+			if (!readClassFile(path + "/" + class_name, class_name, class_id, dataset))
 			{
 				dataset.clear();
 				return dataset;
@@ -214,7 +181,7 @@ namespace abacoc
 			return dataset;
 		}
 
-		dataset = readFolders(path);
+		dataset = readFolder(path);
 
 		bool normalize_data = false;
 		norm_t norm_type = NONE;

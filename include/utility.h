@@ -128,6 +128,10 @@ namespace abacoc
 
 	Dataset readDataset(const std::map<std::string, std::string> &args, const std::string &file);
 
+	Dataset readFolder(const std::string &path);
+
+	bool readClassFile(const std::string &class_path, const std::string &class_alias, int class_id, Dataset &dataset);
+
 	std::map<std::string, std::string> parseLine(int argc, char* argv[]);
 
 	int str2int(const std::string &s);

@@ -82,19 +82,11 @@ int main(int argc, char* argv[])
 	Parameters parameters(line_args);
 
 	//You can implement your own Searcher. 
-	//Right now, we support ExhaustiveSearcher and KDTreeSearcher.
+	//Right now, we support ExhaustiveSearcher.
 	Searcher* searcher;
 	std::map<std::string, std::string>::const_iterator it;
 	it = line_args.find("-s");
-	if (it != line_args.end())
-	{
-		std::string search_type = it->second;
-		if (strcmp(search_type.c_str(), "ex") == 0)
-		{
-			searcher = new ExhaustiveSearcher(&parameters);
-		}
-	}
-	else
+	if (it == line_args.end())
 	{
 		searcher = new ExhaustiveSearcher(&parameters);
 	}
@@ -103,15 +95,7 @@ int main(int argc, char* argv[])
 	//Right now we support MaxBallPredictor.
 	BallPredictor* ball_pred;
 	it = line_args.find("-p");
-	if (it != line_args.end())
-	{
-		std::string pred_type = it->second;
-		if (strcmp(pred_type.c_str(), "max") == 0)
-		{
-			ball_pred = new MaxBallPredictor();
-		}
-	}
-	else
+	if (it == line_args.end())
 	{
 		ball_pred = new MaxBallPredictor();
 	}
@@ -127,7 +111,7 @@ int main(int argc, char* argv[])
 		model.train(train[rand_ind]);
 	}*/
 
-	FooGenerator foo_gen(train.size(), 9);
+	SequentialGenerator foo_gen(train.size(), 9);
 	for (size_t i = 0; i < train.size(); i++)
 	{
 		int rand_ind = foo_gen.getNext();

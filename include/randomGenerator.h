@@ -16,13 +16,13 @@ namespace abacoc
 		int getNext();
 	};
 
-	class FooGenerator
+	class SequentialGenerator
 	{
 		std::deque<int> indexes;
 		int n_classes;
 
 	public:
-		FooGenerator(int ind_max, int n_classes);
+		SequentialGenerator(int ind_max, int n_classes);
 		int getNext();
 	};
 }
