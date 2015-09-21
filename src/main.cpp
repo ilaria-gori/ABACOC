@@ -132,11 +132,11 @@ int main(int argc, char* argv[])
 	{
 		int rand_ind = foo_gen.getNext();
 		model.train(train[rand_ind]);
-		/*printf("iter %d\n", i);
+		printf("iter %d\n", i);
 		if (!model.compareOutput(models_to_compare[i]))
 		{
 			break;
-		}*/
+		}
 	}
 
 	//This is to save the model into a .txt file

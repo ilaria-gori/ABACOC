@@ -16,6 +16,7 @@ namespace abacoc
 		BallPredictor* ball_predictor;
 		Searcher* searcher;
 		const Parameters* parameters;
+		Sample init_sample;
 
 		double computeConfidence(const Sample &sample) const;
 		double computeInitRadius(const VectorE &sample1, const VectorE &sample2) const;

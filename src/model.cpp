@@ -4,6 +4,7 @@ namespace abacoc
 {
 	Model::Model(const Parameters* parameters) : parameters(parameters), searcher(nullptr), ball_predictor(nullptr)
 	{
+		init_sample.class_id = -1;
 		searcher = new ExhaustiveSearcher(parameters);
 		ball_predictor = new MaxBallPredictor();
 	}
@@ -19,11 +20,31 @@ namespace abacoc
 		if (searcher->getNumBall() == 0)
 		{
 			VectorE s = data.samples[0];
-			double init_radius = computeInitRadius(s, data.samples[1]);
-			Sample sample(data.class_id, s);
-			Ball ball(0, sample, init_radius);
-			searcher->addBall(ball);
-			iter = 1;
+			if (data.samples.size() > 1)
+			{
+				double init_radius = computeInitRadius(s, data.samples[1]);
+				Sample sample(data.class_id, s);
+				Ball ball(0, sample, init_radius);
+				searcher->addBall(ball);
+				iter = 1;
+			}
+			else
+			{
+				if (init_sample.class_id == -1)
+				{
+					init_sample = Sample(data.class_id, s);
+					return;
+				}
+				else
+				{
+					double init_radius = computeInitRadius(init_sample.v, data.samples[0]);
+					searcher->addBall(Ball(searcher->getNumBall(), init_sample, init_radius));
+					Sample sample(data.class_id, data.samples[0]);
+					Ball ball(0, sample, init_radius);
+					searcher->addBall(ball);
+					return;
+				}
+			}
 		}
 		for (size_t i = iter; i < data.samples.size(); i++)
 		{
