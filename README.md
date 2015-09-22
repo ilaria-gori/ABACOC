@@ -13,14 +13,37 @@ For Standard Classification:
 Rocco De Rosa, Francesco Orabona and Nicolò Cesa-Bianchi (2015), "The ABACOC Algorithm: a Novel Approach for Nonparametric Classification of Data Streams". Proc.The 2015 IEEE 15th International Conference on Data Mining (ICDM'15).
 
 ## Installation
-The only dependence is Eigen. Download Eigen and create an environment variable called EIGEN_ROOT, which points to the Eigen folder.
-The program has been tested under both Linux and Windows. In both cases, we use cmake.
+The only dependence is Eigen. Download Eigen and create an environment variable called EIGEN_ROOT, which points to the Eigen folder. Then, download ABACOC using git: 
+
+    git clone https://github.com/ilaria-gori/ABACOC/tree/master
+	
+then we compile using cmake. In Linux:
+
+	mkdir build
+	cd build
+	ccmake ..
+	make
+	
+In Windows this program has been tested using CmakeGui and Visual Studio.
 
 ## Brief tutorial
 The objects to create are, in order:
 
 ##### Dataset
-We provide a simple program to read a set of feature vectors from file. In our setting, there is one file for each class. Each file contains a feature vector on each line. The feature vectors belonging to the same data structure (set of features extracted from a video, or set of features extracted from an image) are separated by a newline. Different sets of feature vectors are separated by a set of white spaces. In general, the Dataset data structure is a vector of Data, where Data contains the class name to whom it belongs, a unique class_id and a set of feature vectors. We also provide a method to normalize the data and to add derivative information (in case you are working on time series) while reading the dataset. Normalization can be enabled using the command line arg -n, and can be L1 or L2. Derivative can be enabled using the command line arg -t.
+We provide a simple program to read a set of feature vectors from file. In our setting, there is one file for each class. Each file contains a feature vector on each line. The feature vectors belonging to the same data structure (set of features extracted from a video, or set of features extracted from an image) are separated by a newline. Different sets of feature vectors are separated by a set of white spaces. For example, imagine that we have a set of videos belonging to the class "run", and that for each video we extract a set of feature vectors. The file "run.txt" will look like this:
+
+	0.2 -0.8 0.5 0.4
+	0.33 0.28 -0.9 0.11
+	0.28 -0.42 0.54 0.9
+	
+	0.44 -0.12 -0.88 0.9
+	0.24 0.56 0.72 0.60
+	0.33 0.29 0.9 -0.11
+	0.52 0.2 -0.1 0.009
+	
+The first three lines correspond to the three feature vectors extracted from the first video. The remaining four lines represent the four feature vectors extracted from the second video. We also provide a method to normalize the data and to add derivative information (in case you are working on time series) while reading the dataset. Normalization can be enabled using the command line arg -n, and can be L1 or L2. Derivative can be enabled using the command line arg -t.
+
+In general, the program expects a Dataset, which is a vector of Data, where Data contains the class name to whom it belongs, a unique class_id and a set of feature vectors. 
 
 ##### Parameters
 The Parameters data structure is initialized using the map structure created reading the command line. It contains:
