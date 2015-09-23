@@ -5,7 +5,7 @@
 
 namespace abacoc
 {
-	struct Ball;
+	class Ball;
 
 	class BallPredictor
 	{

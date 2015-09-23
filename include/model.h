@@ -23,8 +23,8 @@ namespace abacoc
 		double computeInitRadius(const VectorE &sample1, const VectorE &sample2) const;
 
 	public:
-		Model(const Parameters* parameters);
-		Model(const Parameters* parameters, Searcher* searcher, BallPredictor* ball_predictor);
+		Model(const Parameters &parameters);
+		Model(const Parameters &parameters, Searcher* searcher, BallPredictor* ball_predictor);
 		~Model();
 		void train(const Data &data);
 		int predict(const Data &data, double &confidence) const;

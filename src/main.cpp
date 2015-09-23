@@ -58,7 +58,7 @@ int main(int argc, char* argv[])
 		ball_pred = new MaxBallPredictor();
 	}
 
-	Model model(&parameters, searcher, ball_pred);
+	Model model(parameters, searcher, ball_pred);
 
 	/*RandomGenerator rand_gen(train.size());
 	
@@ -83,7 +83,7 @@ int main(int argc, char* argv[])
 
 		if (class_id == test[i].class_id)
 		{
-			correct_pred += 1;
+			correct_pred++;
 		}
 	}
 

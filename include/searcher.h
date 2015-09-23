@@ -11,7 +11,7 @@ namespace abacoc
 	{
 
 	public:
-		Searcher(const Parameters *parameters) { this->parameters = parameters; }
+		Searcher(const Parameters *parameters) : parameters(parameters) {}
 		virtual Ball* knnsearch(const Sample &sample, double &distance) = 0;
 		virtual void addBall(const Ball &ball) = 0;
 		virtual void removeBall(const Ball &ball) = 0;
