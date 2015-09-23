@@ -15,7 +15,7 @@ Rocco De Rosa, Francesco Orabona and Nicolò Cesa-Bianchi (2015), "The ABACOC Al
 ## Installation
 The only dependence is Eigen. Download Eigen and create an environment variable called EIGEN_ROOT, which points to the Eigen folder. Then, download ABACOC using git: 
 
-    git clone https://github.com/ilaria-gori/ABACOC/tree/master
+    git clone https://github.com/ilaria-gori/ABACOC
 	
 then we compile using cmake. In Linux:
 

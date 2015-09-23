@@ -5,7 +5,7 @@ PROJECT(${PROJECTNAME})
 
 ADD_DEFINITIONS(-std=c++0x)
 
-if(NOT ENV{EIGEN_ROOT})
+if(NOT DEFINED ENV{EIGEN_ROOT})
 message(FATAL_ERROR "Could not find EIGEN_ROOT environment variable")
 endif()
 
