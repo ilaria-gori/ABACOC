@@ -100,8 +100,8 @@ int main(int argc, char* argv[])
 		ball_pred = new MaxBallPredictor();
 	}
 
-	std::string matlab_file = "C:\\Users\\Ilaria\\Desktop\\matlab.txt";
-	std::vector<MatlabModel> models_to_compare = readFromFile(matlab_file);
+	/*std::string matlab_file = "C:\\Users\\Ilaria\\Desktop\\matlab.txt";
+	std::vector<MatlabModel> models_to_compare = readFromFile(matlab_file);*/
 	Model model(&parameters, searcher, ball_pred);
 	/*RandomGenerator rand_gen(train.size());
 	
@@ -117,10 +117,10 @@ int main(int argc, char* argv[])
 		int rand_ind = foo_gen.getNext();
 		model.train(train[rand_ind]);
 		printf("iter %d\n", i);
-		if (!model.compareOutput(models_to_compare[i]))
+		/*if (!model.compareOutput(models_to_compare[i]))
 		{
 			break;
-		}
+		}*/
 	}
 
 	//This is to save the model into a .txt file
