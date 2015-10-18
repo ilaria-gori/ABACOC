@@ -1,3 +1,32 @@
+/* Copyright: (C) 2015 Ilaria Gori, All rights reserved
+* Author: Ilaria Gori
+* email: ilary.gori@gmail.com
+*
+* Redistribution and use in source and binary forms, with or without
+* modification, are permitted provided that the following conditions are met:
+*
+* 1. Redistributions of source code must retain the above copyright notice, this
+* list of conditions and the following disclaimer.
+* 2. Redistributions in binary form must reproduce the above copyright notice,
+* this list of conditions and the following disclaimer in the documentation
+* and/or other materials provided with the distribution.
+*
+* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+* ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+* WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+* DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+* ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+* (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+* ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+* (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+* SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+*
+* The views and conclusions contained in the software and documentation are those
+* of the authors and should not be interpreted as representing official policies,
+* either expressed or implied, of the FreeBSD Project.
+*/
+
 #ifndef _UTILITY_H_
 #define _UTILITY_H_
 
@@ -9,16 +38,20 @@
 #include <iostream>
 #include <valarray>
 #include <Eigen/Dense>
-#include "dirent.h"
+
+#ifdef _WIN32
+	#include "windows/dirent.h"
+#else
+	#include "dirent.h"
+#endif
 
 namespace abacoc
 {
-	//class Searcher;
 	typedef Eigen::VectorXd VectorE;
 	const double eps = 0.0000000001;
 	enum norm_t{NONE, L1, L2};
 	enum pred_type{CONFIDENCE, SCORE};
-
+	
 	struct MatlabModel
 	{
 		std::vector<int> errors;
@@ -34,6 +67,8 @@ namespace abacoc
 		std::string alias;
 		std::deque<VectorE> samples;
 	};
+
+	typedef std::vector<Data> Dataset;
 
 	struct Sample
 	{
@@ -51,8 +86,6 @@ namespace abacoc
 		data[i] = data[j];
 		data[j] = tmp;
 	}
-
-	double randUniform(double lower, double upper);
 
 	template<typename T>
 	std::vector<int> sortIndexesDesc(const std::valarray<T> v)
@@ -102,29 +135,7 @@ namespace abacoc
 		return idx;
 	}
 
-	/*std::vector<int> sortIndexesDesc(const VectorE &v)
-	{
-		std::vector<int> idx(v.size());
-		std::iota(idx.begin(), idx.end(), 0);
-
-		std::sort(idx.begin(), idx.end(),
-			[&v](size_t i1, size_t i2) {return v(i1) > v(i2); });
-
-		return idx;
-	}
-
-	std::vector<int> sortIndexesAsc(const VectorE &v)
-	{
-		std::vector<int> idx(v.size());
-		std::iota(idx.begin(), idx.end(), 0);
-
-		std::sort(idx.begin(), idx.end(),
-			[&v](size_t i1, size_t i2) {return v(i1) < v(i2); });
-
-		return idx;
-	}*/
-
-	typedef std::vector<Data> Dataset;
+	double randUniform(double lower, double upper);
 
 	Dataset readDataset(const std::map<std::string, std::string> &args, const std::string &file);
 

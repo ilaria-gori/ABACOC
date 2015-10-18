@@ -1,3 +1,32 @@
+/* Copyright: (C) 2015 Ilaria Gori, All rights reserved
+* Author: Ilaria Gori
+* email: ilary.gori@gmail.com
+* 
+* Redistribution and use in source and binary forms, with or without
+* modification, are permitted provided that the following conditions are met:
+* 
+* 1. Redistributions of source code must retain the above copyright notice, this
+* list of conditions and the following disclaimer.
+* 2. Redistributions in binary form must reproduce the above copyright notice,
+* this list of conditions and the following disclaimer in the documentation
+* and/or other materials provided with the distribution.
+*
+* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+* ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+* WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+* DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+* ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+* (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+* ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+* (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+* SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+*
+* The views and conclusions contained in the software and documentation are those
+* of the authors and should not be interpreted as representing official policies,
+* either expressed or implied, of the FreeBSD Project.
+*/
+
 #include <algorithm>
 #include <fstream>
 #include <iostream>
@@ -55,6 +84,8 @@ std::vector<MatlabModel> readFromFile(const std::string &matFile)
 
 int main(int argc, char* argv[])
 {
+	//Command line args are saved in the following map and are used to initialize the 
+	//Parameters data structure
 	std::map<std::string, std::string> line_args;
 
 	if (argc > 1)
@@ -62,8 +93,8 @@ int main(int argc, char* argv[])
 		line_args = parseLine(argc, argv);
 	}
 
-	//this reads the dataset in a convenient format (each class folder contains files with features as
-	//lines of doubles) and, if requested by the user, normalize them and/or add the derivative. You can
+	//This reads the dataset in a convenient format and, if requested by the user, 
+	//normalize them and/or add the derivative. You can
 	//use the same function twice to get train and test and using "-train" and "-test" as second parameter
 	Dataset train = readDataset(line_args, "-train");
 	if (train.empty())
@@ -102,7 +133,8 @@ int main(int argc, char* argv[])
 
 	/*std::string matlab_file = "C:\\Users\\Ilaria\\Desktop\\matlab.txt";
 	std::vector<MatlabModel> models_to_compare = readFromFile(matlab_file);*/
-	Model model(&parameters, searcher, ball_pred);
+	Model model(parameters, searcher, ball_pred);
+
 	/*RandomGenerator rand_gen(train.size());
 	
 	for (size_t i = 0; i < train.size(); i++)
@@ -111,10 +143,10 @@ int main(int argc, char* argv[])
 		model.train(train[rand_ind]);
 	}*/
 
-	SequentialGenerator foo_gen(train.size(), 9);
+	SequentialGenerator seq_gen(train.size(), 9);
 	for (size_t i = 0; i < train.size(); i++)
 	{
-		int rand_ind = foo_gen.getNext();
+		int rand_ind = seq_gen.getNext();
 		model.train(train[rand_ind]);
 		printf("iter %d\n", i);
 		/*if (!model.compareOutput(models_to_compare[i]))
@@ -122,10 +154,6 @@ int main(int argc, char* argv[])
 			break;
 		}*/
 	}
-
-	//This is to save the model into a .txt file
-	//std::string out = "C:\\Users\\Ilaria\\Desktop\\output.txt";
-	//model.save(out);
 
 	int correct_pred = 0;
 	for (size_t i = 0; i < test.size(); i++)
@@ -135,10 +163,11 @@ int main(int argc, char* argv[])
 
 		if (class_id == test[i].class_id)
 		{
-			correct_pred += 1;
+			correct_pred++;
 		}
 	}
 
 	double accuracy = (double)correct_pred / (double)test.size();
+	std::cout << "Accuracy = " << accuracy << std::endl;
 	return 0;
 }
