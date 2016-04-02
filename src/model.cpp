@@ -138,7 +138,7 @@ int Model::predict(const Data &data, double &confidence) const
 	{
 		for (auto i = 0; i < class_confidence.size(); i++)
 		{
-			if (class_confidence(i) > max_val)
+			if (class_confidence(i) >= max_val)
 			{
 				max_val = class_confidence(i);
 				index = i;
@@ -149,7 +149,7 @@ int Model::predict(const Data &data, double &confidence) const
 	{
 		for (auto i = 0; i < class_scores.size(); i++)
 		{
-			if (class_scores(i) > max_val)
+			if (class_scores(i) >= max_val)
 			{
 				max_val = class_scores(i);
 				index = i;

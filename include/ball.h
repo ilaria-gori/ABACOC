@@ -47,12 +47,13 @@ namespace abacoc
 		int errors;
 		int n_updates;
 		double init_radius;
-		double radius;
+
 		VectorE center;
 
 		void updateCenter();
 
 	public:
+		double radius;
 		Ball(const long ID, const Sample &center, double radius);
 		void update(const Sample &sample, const BallPredictor &ball_predictor, const Parameters &par);
 		long getID() const;
