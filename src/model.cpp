@@ -133,7 +133,7 @@ int Model::predict(const Data &data, double &confidence) const
 	VectorE class_confidence = weighted_probs/data.samples.size();
 
 	int index = -1;
-	double max_val = 0.0;
+	double max_val = -std::numeric_limits<double>::max();
 	if (parameters->prediction_type == CONFIDENCE)
 	{
 		for (auto i = 0; i < class_confidence.size(); i++)
