@@ -111,7 +111,7 @@ int Model::predict(const Data &data, double &confidence) const
 		#ifdef _WIN32
 			maxval = max(0.0, distance - ball->getRadius());
 		#else
-			maxval = std::max(0.0, distance - ball->radius);
+			maxval = std::max(0.0, distance - ball->getRadius());
 		#endif
 		double exp_value = maxval*maxval;
 		double den = 2 * ball->getRadius()*ball->getRadius();
@@ -133,7 +133,7 @@ int Model::predict(const Data &data, double &confidence) const
 	VectorE class_confidence = weighted_probs/data.samples.size();
 
 	int index = -1;
-	double max_val = 0.0;
+	double max_val = -std::numeric_limits<double>::infinity();
 	if (parameters->prediction_type == CONFIDENCE)
 	{
 		for (auto i = 0; i < class_confidence.size(); i++)

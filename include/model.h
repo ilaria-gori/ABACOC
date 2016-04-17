@@ -32,6 +32,7 @@
 
 #include <set>
 #include <algorithm>
+#include <limits>
 #include "ball.h"
 #include "maxBallPredictor.h"
 #include "parameters.h"
